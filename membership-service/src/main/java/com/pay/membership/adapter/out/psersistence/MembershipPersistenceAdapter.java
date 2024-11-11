@@ -1,16 +1,17 @@
-package com.pay.membership.adapter.out;
+package com.pay.membership.adapter.out.psersistence;
 
-import com.pay.membership.adapter.out.psersistence.MembershipJpaEntity;
+import com.pay.common.PersistenceAdapter;
 import com.pay.membership.application.port.out.FindMembershipPort;
+import com.pay.membership.application.port.out.ModifyMembershipPort;
 import com.pay.membership.application.port.out.RegisterMembershipPort;
 
 import com.pay.membership.domain.Membership;
-import common.PersistenceAdapter;
+
 import lombok.RequiredArgsConstructor;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class MembershipPersistenceAdapter implements RegisterMembershipPort , FindMembershipPort {
+public class MembershipPersistenceAdapter implements RegisterMembershipPort , FindMembershipPort, ModifyMembershipPort {
     private final SpringDataMembershipRepository membershipRepository;
 
 
@@ -32,5 +33,16 @@ public class MembershipPersistenceAdapter implements RegisterMembershipPort , Fi
     @Override
     public MembershipJpaEntity findMembership(Membership.MembershipId membershipId) {
         return membershipRepository.getById(Long.parseLong(membershipId.getMembershipId()));
+    }
+
+    @Override
+    public MembershipJpaEntity modifyMembership(Membership.MembershipId membershipId, Membership.MembershipName membershipName, Membership.MembershipEmail membershipEmail, Membership.MembershipAddress membershipAddress, Membership.MembershipIsValid membershipIsValid, Membership.MembershipAggregateIdentifier membershipAggregateIdentifier) {
+        MembershipJpaEntity entity = membershipRepository.getById(Long.parseLong(membershipId.getMembershipId()));
+        entity.setName(membershipName.getNameValue());
+        entity.setEmail(membershipEmail.getEmailValue());
+        entity.setAddress(membershipAddress.getAddressValue());
+        entity.setAggregateIdentifier(membershipAggregateIdentifier.getAggregateIdentifier());
+        entity.setValid(membershipIsValid.isValidValue());
+        return membershipRepository.save(entity);
     }
 }

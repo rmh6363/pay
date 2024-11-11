@@ -1,13 +1,10 @@
 package com.pay.membership.application.port.in;
 
-import common.SelfValidating;
+import com.pay.common.SelfValidating;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-
-import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.NotBlank;
 
 @Builder
 @Data

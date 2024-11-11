@@ -1,11 +1,10 @@
 package com.pay.membership.adapter.in.web;
 
+import com.pay.common.WebAdapter;
 import com.pay.membership.application.port.in.FindMembershipCommand;
 import com.pay.membership.application.port.in.FindMembershipUseCase;
-import com.pay.membership.application.port.in.RegisterMembershipCommand;
-import com.pay.membership.application.port.in.RegisterMembershipUseCase;
 import com.pay.membership.domain.Membership;
-import common.WebAdapter;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

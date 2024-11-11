@@ -12,10 +12,14 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class RegisterMembershipCommand extends SelfValidating<RegisterMembershipCommand> {
+
+public class ModifyMembershipCommand extends SelfValidating<ModifyMembershipCommand> {
     @NonNull
     @NotBlank
-    private  final String name;
+    private final String membershipId;
+    @NonNull
+    @NotBlank
+    private final String name;
 
     @NonNull
     @NotBlank
@@ -30,7 +34,8 @@ public class RegisterMembershipCommand extends SelfValidating<RegisterMembership
 
     private final String aggregateIdentifier;
 
-    public RegisterMembershipCommand(@NonNull String name, @NonNull String email, @NonNull String address, Boolean isValid, String aggregateIdentifier) {
+    public ModifyMembershipCommand(@NonNull String membershipId, @NonNull String name, @NonNull String email, @NonNull String address, Boolean isValid, String aggregateIdentifier) {
+        this.membershipId = membershipId;
         this.name = name;
         this.email = email;
         this.address = address;

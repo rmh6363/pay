@@ -1,4 +1,4 @@
-package com.pay.membership.adapter.out;
+package com.pay.membership.adapter.out.psersistence;
 
 import com.pay.membership.adapter.out.psersistence.MembershipJpaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

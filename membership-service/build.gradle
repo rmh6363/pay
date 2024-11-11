@@ -36,6 +36,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     runtimeOnly 'org.postgresql:postgresql'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.4'
+    implementation project(path:':common')
 
 }
 
