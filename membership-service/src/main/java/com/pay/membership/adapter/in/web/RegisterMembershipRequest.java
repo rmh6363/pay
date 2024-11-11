@@ -2,13 +2,12 @@ package com.pay.membership.adapter.in.web;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterMembershioRequest {
+public class RegisterMembershipRequest {
 
     private String name;
     private String email;
