@@ -7,8 +7,6 @@
 
 회원(Membership), 뱅킹(Banking), 머니(Money), 송금(Remittance), 결제(Payment), 정산(Settlement) 6개의 서비스로 구성되어 있으며, 각각의 독립적인 프로젝트로 구성되어 있습니다.
 
-## Overall Architecture for Monolithic System
-![Monolithic System](md_resource/Overview2.png)
 
 ## Overall Architecture for MSA
 ![MSA System](md_resource/Overview1.png)
