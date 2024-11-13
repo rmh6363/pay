@@ -94,7 +94,7 @@
 ### Sequence Diagram Example (결제 프로세스)
 ![Payment_Sequence_Example](md_resource/Payment_Sequence_Example.png)
 
-## Settlement Service (Part. 6)
+## Settlement Service
 완료된 결제 내역을 기준으로 가맹점에 정산된 금액을 입금하고, 수수료 수취를 위한 기능을 제공하는 서비스입니다.
 
 ### API Lists
