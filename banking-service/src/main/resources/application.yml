@@ -1,0 +1,16 @@
+spring:
+  # Database
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://host.docker.internal:3306/pay?useSSL=false&allowPublicKeyRetrieval=true
+    username: mysqluser
+    password: mysqlpw
+  # jpa properties
+  jpa:
+    hibernate:
+      ddl-auto: create # 첫 실행 시 "none"으로 변경
+    show-sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect # MySQL 버전에 맞게 설정
+    open-in-view: false
+    generate-ddl: true
