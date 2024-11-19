@@ -5,9 +5,13 @@ import com.pay.banking.application.port.in.RegisterBankAccountUseCase;
 import com.pay.banking.domain.RegisteredBankAccount;
 import com.pay.common.WebAdapter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.NoSuchElementException;
+
 @WebAdapter
 @RestController
 @RequiredArgsConstructor
@@ -24,10 +28,8 @@ public class RegisterBankAccountController {
                 .build();
         RegisteredBankAccount registerBankAccount = registerBankAccountUseCase.registerBankAccount(command);
         if (registerBankAccount == null){
-
-            //ToDo : Error Handling
-            return null;
+            throw new NoSuchElementException("조회한 값이 없습니다.");
         }
-        return registerBankAccountUseCase.registerBankAccount(command);
+        return registerBankAccount;
     }
 }
