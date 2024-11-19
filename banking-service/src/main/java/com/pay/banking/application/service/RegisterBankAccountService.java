@@ -26,6 +26,7 @@ public class RegisterBankAccountService implements RegisterBankAccountUseCase {
 
     @Override
     public RegisteredBankAccount registerBankAccount(RegisterBankAccountCommand command) {
+
         // 은행 계좌를 등록해야하는 서비스 (비즈니스 로직)
 
 
@@ -38,6 +39,12 @@ public class RegisterBankAccountService implements RegisterBankAccountUseCase {
 
         // 실제 외부의 은행 계좌 정보 Get
         BankAccount bankAccount = requestBankAccountInfoPort.getBankAccountInfo(new GetBankAccountRequest(command.getBankName(), command.getBankAccountNumber(), command.isValid()));
+
+        // 1. 중복 계좌 체크
+        long count = registerBankAccountPort.countRegisteredBankAccount(new RegisteredBankAccount.BankName(command.getBankName()),new RegisteredBankAccount.BankAccountNumber(command.getBankAccountNumber()));
+        if (count > 0) {
+            throw new IllegalArgumentException("이미 등록된 계좌입니다.");
+        }
         boolean accountIsValid = bankAccount.isValid();
 
         // 2. 등록가능한 계좌라면, 등록. 성공하면 , 등록에 성공한 등록 정보를 리턴
@@ -45,7 +52,7 @@ public class RegisterBankAccountService implements RegisterBankAccountUseCase {
         // 2-1. 등록가능하지 않은 계좌. 에러 린턴
         if (accountIsValid) {
             // 등록 정보 저장
-            RegisteredBankAccountJpaEntity jpaEntity =  registerBankAccountPort.createRegisteredBankAccount(
+            RegisteredBankAccountJpaEntity jpaEntity = registerBankAccountPort.createRegisteredBankAccount(
                     new RegisteredBankAccount.MembershipId(command.getMembershipId() + ""),
                     new RegisteredBankAccount.BankName(command.getBankName()),
                     new RegisteredBankAccount.BankAccountNumber(command.getBankAccountNumber()),

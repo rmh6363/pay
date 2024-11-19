@@ -28,7 +28,6 @@ public class RegisteredBankAccountJpaEntity {
         this.bankAccountNumber = bankAccountNumber;
         this.linkedStatusIsValid = linkedStatusIsValid;
     }
-
     @Override
     public String toString() {
         return "RegisteredBankAccountJpaEntity{" +

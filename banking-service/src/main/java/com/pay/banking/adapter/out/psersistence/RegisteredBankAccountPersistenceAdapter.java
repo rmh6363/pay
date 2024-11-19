@@ -23,4 +23,11 @@ public class RegisteredBankAccountPersistenceAdapter implements RegisterBankAcco
 
         ));
     }
+
+    @Override
+    public long countRegisteredBankAccount(RegisteredBankAccount.BankName bankName, RegisteredBankAccount.BankAccountNumber bankAccountNumber) {
+        return bankAccountRepository.countByBankNameAndBankAccountNumber(bankName.getBankName(), bankAccountNumber.getBankAccountNumber());
+    }
+
+
 }
