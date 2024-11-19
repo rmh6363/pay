@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface SpringDataRegisteredBankAccountRepository extends JpaRepository<RegisteredBankAccountJpaEntity,Long> {
     long countByBankNameAndBankAccountNumber(String bankName, String bankAccountNumber);
+
+    RegisteredBankAccountJpaEntity findByMembershipId(String membershipId);
 }

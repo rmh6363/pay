@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'com.pay.banking'
-version '1.0.3'
+version '1.0.4'
 
 compileJava{
     targetCompatibility=11

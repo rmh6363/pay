@@ -36,7 +36,7 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
 
   banking-service:
-    image: shalsgh63/pay-banking-service:1.0.3
+    image: shalsgh63/pay-banking-service:1.0.4
     networks:
       - pay_network
     ports:
@@ -53,8 +53,6 @@ services:
       - SPRING_DATASOURCE_PASSWORD=mysqlpw
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
-
-
 networks:
   pay_network:
     driver: bridge

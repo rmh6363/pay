@@ -1,5 +1,6 @@
 package com.pay.banking.adapter.out.psersistence;
 
+import com.pay.banking.application.port.out.FindBankAccountPort;
 import com.pay.banking.application.port.out.RegisterBankAccountPort;
 import com.pay.banking.domain.RegisteredBankAccount;
 import com.pay.common.PersistenceAdapter;
@@ -8,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class RegisteredBankAccountPersistenceAdapter implements RegisterBankAccountPort {
+public class RegisteredBankAccountPersistenceAdapter implements RegisterBankAccountPort, FindBankAccountPort {
     private final SpringDataRegisteredBankAccountRepository bankAccountRepository;
 
 
@@ -30,4 +31,8 @@ public class RegisteredBankAccountPersistenceAdapter implements RegisterBankAcco
     }
 
 
+    @Override
+    public RegisteredBankAccountJpaEntity findRegisteredBankAccount(RegisteredBankAccount.MembershipId membershipId) {
+        return bankAccountRepository.findByMembershipId(membershipId.getMembershipId());
+    }
 }
