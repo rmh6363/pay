@@ -33,7 +33,6 @@ target/
 bin/
 build/
 dist/
-out/
 db/data
 # IDE 및 편집기 설정 파일
 .idea/
