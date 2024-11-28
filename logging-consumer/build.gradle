@@ -5,7 +5,7 @@ plugins {
     id 'com.palantir.docker' version '0.25.0'
 }
 
-group 'com.pay.money'
+group 'com.pay.logging-consumer'
 version '1.0.0'
 
 compileJava{
