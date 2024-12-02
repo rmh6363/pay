@@ -34,7 +34,7 @@ public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyPort
     public MemberMoneyJpaEntity increaseMoney(MemberMoney.MembershipId membershipId, int increaseMoneyAmount) {
         MemberMoneyJpaEntity entity ;
         try {
-            List<MemberMoneyJpaEntity> entityList = springDataMemberMoneyRepository.findByMembershipId(Long.parseLong(membershipId.getMembershipId()));
+            List<MemberMoneyJpaEntity> entityList = springDataMemberMoneyRepository.findAllByMembershipId(Long.parseLong(membershipId.getMembershipId()));
             entity = entityList.get(0);
             entity.setBalance(entity.getBalance()+increaseMoneyAmount);
             return springDataMemberMoneyRepository.save(entity);

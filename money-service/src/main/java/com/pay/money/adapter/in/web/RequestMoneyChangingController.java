@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RequestMoneyChangingController {
 
     private final IncreaseMoneyRequestUseCase increaseMoneyRequestUseCase;
-    @PostMapping(path = "/banking/increase")
+    @PostMapping(path = "/money/increase")
     MoneyChangingResultDetail increaseMoneyChangingRequest(@RequestBody IncreaseMoneyChangingRequest request ){
         IncreaseMoneyRequestCommand command = IncreaseMoneyRequestCommand.builder()
                 .targetMembershipId(request.getTargetMembershipId())
@@ -32,7 +32,7 @@ public class RequestMoneyChangingController {
         );
         return resultDetail;
     }
-    @PostMapping(path = "/banking/increase-async")
+    @PostMapping(path = "/money/increase-async")
     MoneyChangingResultDetail increaseMoneyChangingRequestAsync(@RequestBody IncreaseMoneyChangingRequest request ){
         IncreaseMoneyRequestCommand command = IncreaseMoneyRequestCommand.builder()
                 .targetMembershipId(request.getTargetMembershipId())
