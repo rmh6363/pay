@@ -1,6 +1,7 @@
 package com.pay.money.adapter.out.psersistence;
 
 import com.pay.common.PersistenceAdapter;
+import com.pay.money.application.port.out.DecreaseMoneyPort;
 import com.pay.money.application.port.out.IncreaseMoneyPort;
 import com.pay.money.domain.MemberMoney;
 import com.pay.money.domain.MoneyChangingRequest;
@@ -12,7 +13,7 @@ import java.util.UUID;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyPort {
+public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyPort, DecreaseMoneyPort {
     private final SpringDataMoneyChangingRepository springDataMoneyChangingRepository;
     private final SpringDataMemberMoneyRepository springDataMemberMoneyRepository;
 
@@ -28,6 +29,22 @@ public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyPort
                 moneyChangingStatus.getChangingMoneyStatus(),
                 UUID.randomUUID()
         ));
+    }
+
+    @Override
+    public MemberMoneyJpaEntity decreaseMoney(MemberMoney.MembershipId membershipId, int decreaseMoneyAmount) {
+        MemberMoneyJpaEntity entity ;
+        try {
+            List<MemberMoneyJpaEntity> entityList = springDataMemberMoneyRepository.findAllByMembershipId(Long.parseLong(membershipId.getMembershipId()));
+            entity = entityList.get(0);
+            entity.setBalance(entity.getBalance()-decreaseMoneyAmount);
+            return springDataMemberMoneyRepository.save(entity);
+
+        }catch (Exception e){
+            entity = new MemberMoneyJpaEntity(Long.parseLong(membershipId.getMembershipId()),
+                    decreaseMoneyAmount);
+            return springDataMemberMoneyRepository.save(entity);
+        }
     }
 
     @Override

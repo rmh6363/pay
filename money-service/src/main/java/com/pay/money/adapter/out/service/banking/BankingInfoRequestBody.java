@@ -1,13 +1,12 @@
-package com.pay.money.application.port.out;
+package com.pay.money.adapter.out.service.banking;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MembershipStatus {
+@Data
+public class BankingInfoRequestBody {
     private String membershipId;
-    private boolean isValid;
 }

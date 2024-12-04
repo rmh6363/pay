@@ -7,11 +7,10 @@ import com.pay.common.SubTask;
 import com.pay.common.UseCase;
 import com.pay.money.adapter.out.psersistence.MemberMoneyJpaEntity;
 import com.pay.money.adapter.out.psersistence.MoneyChangingRequestMapper;
-import com.pay.money.application.port.in.IncreaseMoneyRequestCommand;
-import com.pay.money.application.port.in.IncreaseMoneyRequestUseCase;
-import com.pay.money.application.port.out.IncreaseMoneyPort;
+import com.pay.money.application.port.in.DecreaseMoneyRequestCommand;
+import com.pay.money.application.port.in.DecreaseMoneyRequestUseCase;
+import com.pay.money.application.port.out.DecreaseMoneyPort;
 import com.pay.money.application.port.out.SendRechargingMoneyTaskPort;
-import com.pay.money.application.port.out.banking.BankingPort;
 import com.pay.money.application.port.out.membership.MembershipPort;
 import com.pay.money.application.port.out.membership.MembershipStatus;
 import com.pay.money.domain.MemberMoney;
@@ -26,19 +25,16 @@ import java.util.UUID;
 @UseCase
 @RequiredArgsConstructor
 @Transactional
-public class IncreaseMoneyRequestService implements IncreaseMoneyRequestUseCase {
+public class DecreaseMoneyRequestService implements DecreaseMoneyRequestUseCase {
     private final CountDownLatchManager countDownLatchManager;
     private final SendRechargingMoneyTaskPort sendRechargingMoneyTaskPort;
     private final MembershipPort membershipPort;
-    private final IncreaseMoneyPort increaseMoneyPort;
+    private final DecreaseMoneyPort decreaseMoneyPort;
 
     private final MoneyChangingRequestMapper moneyChangingRequestMapper;
 
-    private final BankingPort bankingPort;
-
-
     @Override
-    public MoneyChangingRequest increaseMoneyRequest(IncreaseMoneyRequestCommand command) {
+    public MoneyChangingRequest decreaseMoneyRequest(DecreaseMoneyRequestCommand command) {
         // 머니의충천,증액 과정
         // 1. 고객 정보가 정상인지 확인(멤버)
         MembershipStatus membershipStatus = membershipPort.getMembershipStatus(command.getTargetMembershipId());
@@ -46,7 +42,6 @@ public class IncreaseMoneyRequestService implements IncreaseMoneyRequestUseCase 
             return null;
         }
         // 2. 고객의 연동된 계좌가 있는지 확인, 고객의 연동된 계좌의 잔액이 충분한지 확인(뱅킹)
-        //BankingInfo bankingInfo = bankingPort.getMembershipBankingInfo(membershipStatus.getMembershipId());
 
         // 3. 법인 계좌 상태도 정상인지 확인(뱅킹)
 
@@ -56,11 +51,11 @@ public class IncreaseMoneyRequestService implements IncreaseMoneyRequestUseCase 
 
         // 6-1. 결과 정상라면 ,성공이라고 MoneyChangingRequest 상태값 변경 후 리턴
         // 성공 시에 멤버의 MemberMoney 값 증액
-        MemberMoneyJpaEntity memberMoneyJpaEntity = increaseMoneyPort.increaseMoney(
+        MemberMoneyJpaEntity memberMoneyJpaEntity = decreaseMoneyPort.decreaseMoney(
                 new MemberMoney.MembershipId(command.getTargetMembershipId()),
                 command.getAmount());
         if (memberMoneyJpaEntity != null) {
-            return moneyChangingRequestMapper.mapToDomainEntity(increaseMoneyPort.createMoneyChangingRequest(
+            return moneyChangingRequestMapper.mapToDomainEntity(decreaseMoneyPort.createMoneyChangingRequest(
                     new MoneyChangingRequest.TargetMembershipId(command.getTargetMembershipId()),
                     new MoneyChangingRequest.MoneyChangingType(0),
                     new MoneyChangingRequest.ChangingMoneyAmount(command.getAmount()),
@@ -77,7 +72,7 @@ public class IncreaseMoneyRequestService implements IncreaseMoneyRequestUseCase 
     }
 
     @Override
-    public MoneyChangingRequest increaseMoneyRequestAsync(IncreaseMoneyRequestCommand command) {
+    public MoneyChangingRequest decreaseMoneyRequestAsync(DecreaseMoneyRequestCommand command) {
         // Subtask
         // 각 서비스에 특정 membershipId 로 Validation 을 하기 위한 task
 
@@ -107,7 +102,7 @@ public class IncreaseMoneyRequestService implements IncreaseMoneyRequestUseCase 
 
         RechargingMoneyTask task = RechargingMoneyTask.builder()
                 .taskID(UUID.randomUUID().toString())
-                .taskName("Increase Money Task / 머니 충전 Task")
+                .taskName("Decrease Money Task / 머니 충전 Task")
                 .subTaskList(subTaskList)
                 .moneyAmount(command.getAmount())
                 .membershipID(command.getTargetMembershipId())
@@ -129,23 +124,23 @@ public class IncreaseMoneyRequestService implements IncreaseMoneyRequestUseCase 
 
         // 4. Task Result Consume
         // 받은 응답을 다시 ,countDownLatchManager 를 통해서 결과 데이터 받기.
-        String result =  countDownLatchManager.getDataForKey(task.getTaskID());
-        if (result.equals("success")){
+        String result = countDownLatchManager.getDataForKey(task.getTaskID());
+        if (result.equals("success")) {
             // 4-1 Consume ok, Logic
-            MemberMoneyJpaEntity memberMoneyJpaEntity = increaseMoneyPort.increaseMoney(
+            MemberMoneyJpaEntity memberMoneyJpaEntity = decreaseMoneyPort.decreaseMoney(
                     new MemberMoney.MembershipId(command.getTargetMembershipId()),
                     command.getAmount());
             if (memberMoneyJpaEntity != null) {
-                return moneyChangingRequestMapper.mapToDomainEntity(increaseMoneyPort.createMoneyChangingRequest(
+                return moneyChangingRequestMapper.mapToDomainEntity(decreaseMoneyPort.createMoneyChangingRequest(
                         new MoneyChangingRequest.TargetMembershipId(command.getTargetMembershipId()),
-                        new MoneyChangingRequest.MoneyChangingType(0),
+                        new MoneyChangingRequest.MoneyChangingType(1),
                         new MoneyChangingRequest.ChangingMoneyAmount(command.getAmount()),
                         new MoneyChangingRequest.MoneyChangingStatus(1),
                         new MoneyChangingRequest.Uuid(UUID.randomUUID().toString())
                 ));
 
             }
-        }else {
+        } else {
             // 4-2 Consume fail, Logic
             return null;
         }

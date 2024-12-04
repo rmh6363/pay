@@ -29,6 +29,7 @@ public class CommonHttpClient {
     public CompletableFuture<HttpResponse<String>> sendPostRequest(String url, String body) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
+                .header("Content-Type", "application/json") // Content-Type 설정
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
 

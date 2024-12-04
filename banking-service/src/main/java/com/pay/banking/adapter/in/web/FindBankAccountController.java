@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FindBankAccountController {
     private final FindBankAccountUseCase findBankAccountUseCase;
     @GetMapping(path = "/banking/account/{membershipId}")
-    ResponseEntity<RegisteredBankAccount> findMembershipById(@PathVariable String membershipId ){
+    ResponseEntity<RegisteredBankAccount> findRegisteredBankingAccountByMemberId(@PathVariable String membershipId ){
         FindBankAccountCommand command = FindBankAccountCommand.builder()
                 .membershipId(membershipId)
                 .build();
