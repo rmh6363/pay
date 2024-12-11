@@ -3,9 +3,9 @@
 # Pay Project Overview
 ![Overall Architecture](md_resource/Overall_Architecture_Image.png)
 
-일반적인 간편결제 도메인을 주제로, MSA 를 중점적으로 학습하기 위한 프로젝트입니다.
+일반적인 간편결제 도메인을 주제로, MSA 를 중점적으로 만든 프로젝트입니다.
 
-회원(Membership), 뱅킹(Banking), 머니(Money), 송금(Remittance), 결제(Payment), 정산(Settlement) 6개의 서비스로 구성되어 있으며, 각각의 독립적인 프로젝트로 구성되어 있습니다.
+회원(Membership), 뱅킹(Banking), 머니(Money), 송금(Remittance), 결제(Payment), 정산(Settlement), 프랜차이즈(Franchise) 7개의 서비스로 구성되어 있으며, 각각의 독립적인 프로젝트로 구성되어 있습니다.
 
 
 ## Overall Architecture for MSA
@@ -106,62 +106,4 @@
 ### Sequence Diagram Example (정산 프로세스)
 ![Settlement_Sequence_Example](md_resource/Settlement_Sequence_Example.png)
 
-## Execution
-```
-./gradlew docker
-docker-compose up -d
-```
 
-## Service Endpoint & Swagger UI
-- Membership Service
-  - http://localhost:8081/membership/
-  - http://localhost:8081/swagger-ui.html
-- Banking Service
-  - http://localhost:8082/banking/
-  - http://localhost:8082/swagger-ui.html
-- Money Service
-  - http://localhost:8083/money/
-  - http://localhost:8083/swagger-ui.html
-- Money Local Service (CQRS View Service)
-  - http://localhost:8084/money-local/
-  - http://localhost:8084/swagger-ui.html
-- Remittance Service
-  - http://localhost:8085/remittance/
-  - http://localhost:8085/swagger-ui.html
-- Payment Service
-  - http://localhost:8086/payment/
-  - http://localhost:8086/swagger-ui.html
-- Settlement Service
-  - http://localhost:8087/settlement/
-  - http://localhost:8087/swagger-ui.html
-  
-- Mysql
-  - http://localhost:3306
-  - root password: rootpassword
-  - database: pay
-  - User/PW : mysqluser / mysqlpw
-- Kafka UI
-  - http://localhost:8989
-- Axon Server Dashboard
-  - http://localhost:8024
-
-
-
-
-## Trouble Shooting
-### 1. gradle build(docker build) 시, dockerPrepare 단계에서 error 가 발생하는 경우 
-```
-./gradlew --stop
-./gradlew docker
-```
-
-## Sample Screenshots
-![Sample1](md_resource/sample_docker.png)
-
-![Sample2](md_resource/sample_swagger.png)
-
-![Sample3](md_resource/sample_kafkaui.png)
-
-![Sample4](md_resource/sample_AxonServer.png)
-
-![Sample5](md_resource/sample_mysql.png)
