@@ -113,7 +113,7 @@ Terraform을 통해 Kubernetes 클러스터를 프로비저닝하며, 인프라�
 
 ## Infrastructure configuration
 
-### AWS 클라우드
+### AWS
 - 전체 인프라는 AWS VPC 내에서 운영되며, Kubernetes가 컨테이너화된 마이크로서비스를 관리합니다.
 
 ### Istio
