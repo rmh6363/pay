@@ -1,4 +1,4 @@
-
+![infra](https://github.com/user-attachments/assets/fc003416-815c-4b19-acd9-bb866ce5f920)
 
 # Pay Project Overview
 ![Overall Architecture](md_resource/Overall_Architecture_Image.png)
@@ -8,7 +8,7 @@
 회원(Membership), 뱅킹(Banking), 머니(Money), 송금(Remittance), 결제(Payment), 정산(Settlement), 프랜차이즈(Franchise) 7개의 서비스로 구성되어 있으며, 각각의 독립적인 프로젝트로 구성되어 있습니다.
 
 # Infra Overview
-![Overall Architecture](md_resource/Overall_Architecture_Image.png)
+![Overall Architecture](md_resource/infra.jpeg)
 
 CI: GitHub를 통해 코드를 관리하고, GitHub Actions를 사용하여 컨테이너 이미지를 생성한 후 Amazon ECR에 저장합니다. Helm을 통해 애플리케이션의 구성 변경 사항을 관리합니다.
 CD: Terraform을 통해 Kubernetes 클러스터를 프로비저닝하며, 인프라를 코드로 관리합니다.
