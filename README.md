@@ -8,8 +8,6 @@
 회원(Membership), 뱅킹(Banking), 머니(Money), 송금(Remittance), 결제(Payment), 정산(Settlement), 프랜차이즈(Franchise) 7개의 서비스로 구성되어 있으며, 각각의 독립적인 프로젝트로 구성되어 있습니다.
 
 
-## Overall Architecture for MSA
-![MSA System](md_resource/Overview1.png)
 
 ## Membership Service
 고객의 회원 가입, 회원 정보 변경, 회원 정보 조회 등의 기능을 제공하는 서비스입니다.
