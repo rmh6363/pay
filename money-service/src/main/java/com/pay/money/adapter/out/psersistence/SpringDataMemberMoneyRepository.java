@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface SpringDataMemberMoneyRepository extends JpaRepository<MemberMoneyJpaEntity,Long> {
     @Query("SELECT e  FROM MemberMoneyJpaEntity e WHERE e.membershipId = :membershipId")
-    List<MemberMoneyJpaEntity> findAllByMembershipId(@Param("membershipId") Long membershipId);
-    MemberMoneyJpaEntity findByMembershipId(Long membershipId);
+    List<MemberMoneyJpaEntity> findByMembershipId(@Param("membershipId") Long membershipId);
+
 
 }

@@ -22,6 +22,6 @@ public class GetBalanceRequestService implements GetBalanceRequestUseCase {
 
     @Override
     public MemberMoney getBalanceRequest(GetBalanceRequestCommand command) {
-        return getBalanceRequestMapper.mapToDomainEntity(getBalancePort.getBalance(command.getTargetMembershipId()));
+        return getBalanceRequestMapper.mapToDomainEntity(getBalancePort.getBalance(new MemberMoney.MembershipId(command.getTargetMembershipId())));
     }
 }

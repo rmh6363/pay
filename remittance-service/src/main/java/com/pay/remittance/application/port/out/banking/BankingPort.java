@@ -1,6 +1,6 @@
 package com.pay.remittance.application.port.out.banking;
 
-import com.pay.remittance.adapter.out.service.money.BankingInfo;
+import com.pay.remittance.adapter.out.service.banking.BankingInfo;
 
 public interface BankingPort {
     BankingInfo getMembershipBankingInfo(String membershipId);

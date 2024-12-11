@@ -19,7 +19,17 @@ public class GetBalanceRequestPersistenceAdapter implements GetBalancePort {
 
 
     @Override
-    public MemberMoneyJpaEntity getBalance(String membershipId) {
-        return springDataMemberMoneyRepository.findByMembershipId(Long.valueOf(membershipId));
+    public MemberMoneyJpaEntity getBalance(MemberMoney.MembershipId membershipId) {
+        MemberMoneyJpaEntity entity;
+        List<MemberMoneyJpaEntity> entityList =  springDataMemberMoneyRepository.findByMembershipId(Long.parseLong(membershipId.getMembershipId()));
+        if(entityList.size() == 0){
+            entity = new MemberMoneyJpaEntity(
+                    Long.parseLong(membershipId.getMembershipId()),
+                    0, ""
+            );
+            entity = springDataMemberMoneyRepository.save(entity);
+            return entity;
+        }
+        return  entityList.get(0);
     }
 }

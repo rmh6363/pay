@@ -5,17 +5,21 @@ import com.pay.common.CountDownLatchManager;
 import com.pay.common.RechargingMoneyTask;
 import com.pay.common.SubTask;
 import com.pay.common.UseCase;
+import com.pay.money.adapter.axon.command.RechargingMoneyRequestCreateCommand;
 import com.pay.money.adapter.out.psersistence.MemberMoneyJpaEntity;
 import com.pay.money.adapter.out.psersistence.MoneyChangingRequestMapper;
 import com.pay.money.application.port.in.DecreaseMoneyRequestCommand;
 import com.pay.money.application.port.in.DecreaseMoneyRequestUseCase;
+import com.pay.money.application.port.in.IncreaseMoneyRequestCommand;
 import com.pay.money.application.port.out.DecreaseMoneyPort;
+import com.pay.money.application.port.out.GetBalancePort;
 import com.pay.money.application.port.out.SendRechargingMoneyTaskPort;
 import com.pay.money.application.port.out.membership.MembershipPort;
 import com.pay.money.application.port.out.membership.MembershipStatus;
 import com.pay.money.domain.MemberMoney;
 import com.pay.money.domain.MoneyChangingRequest;
 import lombok.RequiredArgsConstructor;
+import org.axonframework.commandhandling.gateway.CommandGateway;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -32,7 +36,8 @@ public class DecreaseMoneyRequestService implements DecreaseMoneyRequestUseCase 
     private final DecreaseMoneyPort decreaseMoneyPort;
 
     private final MoneyChangingRequestMapper moneyChangingRequestMapper;
-
+    private final CommandGateway commandGateway;
+    private final GetBalancePort getBalancePort;
     @Override
     public MoneyChangingRequest decreaseMoneyRequest(DecreaseMoneyRequestCommand command) {
         // 머니의충천,증액 과정
@@ -146,5 +151,29 @@ public class DecreaseMoneyRequestService implements DecreaseMoneyRequestUseCase 
         }
         // 5. Consume ok -> Logic exec
         return null;
+    }
+
+    @Override
+    public void decreaseMoneyRequestByEvent(DecreaseMoneyRequestCommand command) {
+        MemberMoneyJpaEntity entity = getBalancePort.getBalance(
+                new MemberMoney.MembershipId(command.getTargetMembershipId())
+        );
+        System.out.println("entity = " + entity);
+        String memberMoneyAggregateIdentifier = entity.getAggregateIdentifier();
+        System.out.println("saga시작 command");
+        //saga시작 command
+        commandGateway.send(new RechargingMoneyRequestCreateCommand(memberMoneyAggregateIdentifier,
+                        UUID.randomUUID().toString(),
+                        command.getTargetMembershipId(),
+                        command.getAmount()))
+                .whenComplete((result, throwable) -> {
+                    if (throwable != null) {
+                        throwable.printStackTrace();
+                        throw new RuntimeException(throwable);
+                    } else {
+                        System.out.println("result = " + result);
+
+                    }
+                });
     }
 }

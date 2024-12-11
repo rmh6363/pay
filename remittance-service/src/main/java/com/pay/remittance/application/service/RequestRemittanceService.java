@@ -7,7 +7,7 @@ import com.pay.remittance.adapter.out.persistence.RemittanceRequestMapper;
 import com.pay.remittance.application.port.in.RequestRemittanceCommand;
 import com.pay.remittance.application.port.in.RequestRemittanceUseCase;
 import com.pay.remittance.application.port.out.RequestRemittancePort;
-import com.pay.remittance.adapter.out.service.money.BankingInfo;
+import com.pay.remittance.adapter.out.service.banking.BankingInfo;
 import com.pay.remittance.application.port.out.banking.BankingPort;
 import com.pay.remittance.application.port.out.membership.MembershipPort;
 import com.pay.remittance.application.port.out.membership.MembershipStatus;

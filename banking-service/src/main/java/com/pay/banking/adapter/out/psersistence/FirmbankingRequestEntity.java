@@ -32,7 +32,10 @@ public class FirmbankingRequestEntity {
     private int firmbankingStatus; // 0: 요청 , 1: 완료, 2: 실패
 
     private String uuid;
-    public FirmbankingRequestEntity( String fromBankName, String fromBankAccountNumber, String toBankName, String toBankAccountNumber, int moneyAmount, int firmbankingStatus, UUID uuid) {
+
+    @Getter
+    private String aggregateIdentifier;
+    public FirmbankingRequestEntity( String fromBankName, String fromBankAccountNumber, String toBankName, String toBankAccountNumber, int moneyAmount, int firmbankingStatus, UUID uuid,String aggregateIdentifier) {
 
         this.fromBankName = fromBankName;
         this.fromBankAccountNumber = fromBankAccountNumber;
@@ -41,6 +44,7 @@ public class FirmbankingRequestEntity {
         this.moneyAmount = moneyAmount;
         this.firmbankingStatus = firmbankingStatus;
         this.uuid=uuid.toString();
+        this.aggregateIdentifier=aggregateIdentifier;
     }
 
     @Override

@@ -13,4 +13,7 @@ public interface SpringDataFirmbankingRequestRepository extends JpaRepository<Fi
     List<FirmbankingRequestEntity> findByBankDetails(
             @Param("fromBankName") String fromBankName,
             @Param("fromBankAccountNumber") String fromBankAccountNumber);
+
+    @Query("SELECT e  FROM FirmbankingRequestEntity e WHERE e.aggregateIdentifier = :aggregateIdentifier")
+    List<FirmbankingRequestEntity> findByAggregateIdentifier(@Param("aggregateIdentifier") String aggregateIdentifier);
 }

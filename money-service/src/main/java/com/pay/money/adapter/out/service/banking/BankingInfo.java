@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class BankingInfo {
+    private String registeredBankAccountId;
+    private String aggregateIdentifier;
     private String membershipId;
     private String bankName;
     private String bankAccountNumber;
-    private boolean isValid;
+
 }

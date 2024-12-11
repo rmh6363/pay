@@ -4,7 +4,9 @@ plugins {
     id 'java'
     id 'com.palantir.docker' version '0.25.0'
 }
-
+ext{
+    axonVersion = "4.8.0"
+}
 group 'com.pay.money'
 version '1.0.0'
 
@@ -36,8 +38,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.jetbrains:annotations:23.0.0'
     testImplementation 'junit:junit:4.13.1'
-//    runtimeOnly 'org.postgresql:postgresql'
-//    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.4'
+    implementation group: 'org.axonframework', name: 'axon-configuration', version: "$axonVersion"
+    implementation group: 'org.axonframework', name: 'axon-spring-boot-starter', version: "$axonVersion"
     runtimeOnly 'mysql:mysql-connector-java'
     implementation project(path:':common')
     implementation 'org.apache.kafka:kafka-clients:3.5.1' // Kafka 클라이언트

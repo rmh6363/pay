@@ -12,9 +12,13 @@ public interface RequestFirmbankingPort {
             FirmBankingRequest.ToBankName toBankName,
             FirmBankingRequest.ToBankAccountNumber toBankAccountNumber,
             FirmBankingRequest.MoneyAmount moneyAmount,
-            FirmBankingRequest.FirmbankingStatus firmbankingStatus
+            FirmBankingRequest.FirmbankingStatus firmbankingStatus,
+            FirmBankingRequest.AggregateIdentifier aggregateIdentifier
     );
     FirmbankingRequestEntity modifyFirmbankingRequest(
             FirmbankingRequestEntity entity
+    );
+    FirmbankingRequestEntity getFirmbankingRequest(
+            FirmBankingRequest.AggregateIdentifier aggregateIdentifier
     );
 }

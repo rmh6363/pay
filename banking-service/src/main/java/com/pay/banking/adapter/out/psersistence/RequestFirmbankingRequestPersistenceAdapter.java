@@ -19,7 +19,7 @@ public class RequestFirmbankingRequestPersistenceAdapter implements RequestFirmb
 
 
     @Override
-    public FirmbankingRequestEntity createFirmbankingRequest(FirmBankingRequest.FromBankName fromBankName, FirmBankingRequest.FromBankAccountNumber fromBankAccountNumber, FirmBankingRequest.ToBankName toBankName, FirmBankingRequest.ToBankAccountNumber toBankAccountNumber, FirmBankingRequest.MoneyAmount moneyAmount, FirmBankingRequest.FirmbankingStatus firmbankingStatus) {
+    public FirmbankingRequestEntity createFirmbankingRequest(FirmBankingRequest.FromBankName fromBankName, FirmBankingRequest.FromBankAccountNumber fromBankAccountNumber, FirmBankingRequest.ToBankName toBankName, FirmBankingRequest.ToBankAccountNumber toBankAccountNumber, FirmBankingRequest.MoneyAmount moneyAmount, FirmBankingRequest.FirmbankingStatus firmbankingStatus,FirmBankingRequest.AggregateIdentifier aggregateIdentifier) {
         FirmbankingRequestEntity entity =repository.save(new FirmbankingRequestEntity(
                 fromBankName.getFromBankName(),
                 fromBankAccountNumber.getFromBankAccountNumber(),
@@ -27,7 +27,8 @@ public class RequestFirmbankingRequestPersistenceAdapter implements RequestFirmb
                 toBankAccountNumber.getToBankAccountNumber(),
                 moneyAmount.getMoneyAmount(),
                 firmbankingStatus.getFirmbankingStatus(),
-                UUID.randomUUID()
+                UUID.randomUUID(),
+                aggregateIdentifier.getAggregateIdentifier()
         ));
         return entity;
     }
@@ -35,6 +36,15 @@ public class RequestFirmbankingRequestPersistenceAdapter implements RequestFirmb
     @Override
     public FirmbankingRequestEntity modifyFirmbankingRequest(FirmbankingRequestEntity entity) {
         return repository.save(entity);
+    }
+
+    @Override
+    public FirmbankingRequestEntity getFirmbankingRequest(FirmBankingRequest.AggregateIdentifier aggregateIdentifier) {
+        List<FirmbankingRequestEntity> entityList = repository.findByAggregateIdentifier(aggregateIdentifier.getAggregateIdentifier());
+        if (entityList.size() >= 1){
+            return entityList.get(0);
+        }
+        return null;
     }
 
 

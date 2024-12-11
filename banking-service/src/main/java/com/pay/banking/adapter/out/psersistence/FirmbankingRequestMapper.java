@@ -19,7 +19,9 @@ public class FirmbankingRequestMapper {
                 new FirmBankingRequest.ToBankAccountNumber(requestFirmbankingEntity.getToBankAccountNumber()),
                 new FirmBankingRequest.MoneyAmount(requestFirmbankingEntity.getMoneyAmount()),
                 new FirmBankingRequest.FirmbankingStatus(requestFirmbankingEntity.getFirmbankingStatus()),
+                new FirmBankingRequest.AggregateIdentifier(requestFirmbankingEntity.getAggregateIdentifier()),
                 uuid
+
         );
     }
     // 리스트 조회 매핑

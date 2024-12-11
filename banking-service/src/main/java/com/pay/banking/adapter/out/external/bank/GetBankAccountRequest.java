@@ -6,11 +6,11 @@ import lombok.Data;
 public class GetBankAccountRequest {
     private String bankName;
     private String bankAccountNumber;
-    private boolean isValid;
 
-    public GetBankAccountRequest(String bankName, String bankAccountNumber, boolean isValid) {
+
+    public GetBankAccountRequest(String bankName, String bankAccountNumber) {
         this.bankName = bankName;
         this.bankAccountNumber = bankAccountNumber;
-        this.isValid = isValid;
+
     }
 }

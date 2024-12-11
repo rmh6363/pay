@@ -4,7 +4,6 @@ package com.pay.remittance.adapter.out.service.banking;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pay.common.CommonHttpClient;
 import com.pay.common.ExternalSystemAdapter;
-import com.pay.remittance.adapter.out.service.money.BankingInfo;
 import com.pay.remittance.application.port.out.banking.BankingPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
