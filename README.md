@@ -1,5 +1,3 @@
-![infra](https://github.com/user-attachments/assets/fc003416-815c-4b19-acd9-bb866ce5f920)
-
 # Pay Project Overview
 ![Overall Architecture](md_resource/Overall_Architecture_Image.png)
 
