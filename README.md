@@ -75,7 +75,7 @@
 ![Remittance_Sequence_Example](md_resource/Remittance_Sequence_Example.png)
 
 ## Payment Service
-가맹점에서 Fastcampus Pay 를 이용한 간편 결제 및 결제 내역 조회 등의 기능을 제공하는 서비스입니다. 
+가맹점에서 Pay 를 이용한 간편 결제 및 결제 내역 조회 등의 기능을 제공하는 서비스입니다. 
 
 
 ### API Lists
