@@ -104,7 +104,8 @@
 
 # Infra Overview
 ![Overall Architecture](md_resource/infra.jpeg)
-##Continuous Integration
+
+## Continuous Integration
 GitHub를 통해 코드를 관리하고, GitHub Actions를 사용하여 컨테이너 이미지를 생성한 후 Amazon ECR에 저장합니다. Helm을 통해 애플리케이션의 구성 변경 사항을 관리합니다.
 
 ## Continuous Deployment
