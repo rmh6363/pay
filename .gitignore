@@ -27,7 +27,7 @@ replay_pid*
 *.bin
 *.lock
 *.xml
-*.iml
+
 # 빌드 아티팩트
 target/
 bin/
@@ -45,9 +45,10 @@ db/data
 .env
 config/secrets.json
 *.local
+axon-server-se/config
+axon-server-se/data
+axon-server-se/events
 
-# 로그 파일
-*.log
 
 # 의존성 관리 파일
 node_modules/
