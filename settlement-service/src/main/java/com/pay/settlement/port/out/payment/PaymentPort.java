@@ -1,6 +1,6 @@
-package com.pay.settlement.port.out;
+package com.pay.settlement.port.out.payment;
 
-import com.pay.settlement.adapter.out.service.Payment;
+import com.pay.settlement.adapter.out.service.payment.Payment;
 
 import java.util.List;
 

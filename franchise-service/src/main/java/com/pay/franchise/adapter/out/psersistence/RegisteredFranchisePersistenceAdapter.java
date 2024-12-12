@@ -1,13 +1,14 @@
 package com.pay.franchise.adapter.out.psersistence;
 
 import com.pay.common.PersistenceAdapter;
+import com.pay.franchise.application.port.out.FindFranchisePort;
 import com.pay.franchise.application.port.out.RegisterFranchisePort;
 import com.pay.franchise.domain.Franchise;
 import lombok.RequiredArgsConstructor;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class RegisteredFranchisePersistenceAdapter implements RegisterFranchisePort {
+public class RegisteredFranchisePersistenceAdapter implements RegisterFranchisePort, FindFranchisePort {
     private final SpringDataFranchiseRepository springDataFranchiseRepository;
 
 
@@ -20,6 +21,12 @@ public class RegisteredFranchisePersistenceAdapter implements RegisterFranchiseP
                 bankAccountNumber.getBankAccountNumber(),
                 isValid.isValid()
         ));
+        return entity;
+    }
+
+    @Override
+    public FranchiseEntity FindFranchisee(Franchise.FranchiseeId franchiseeId) {
+        FranchiseEntity entity = springDataFranchiseRepository.getById(Long.valueOf(franchiseeId.getFranchiseeId()));
         return entity;
     }
 }

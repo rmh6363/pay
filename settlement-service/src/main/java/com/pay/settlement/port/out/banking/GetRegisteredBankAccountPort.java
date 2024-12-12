@@ -1,4 +1,4 @@
-package com.pay.settlement.port.out;
+package com.pay.settlement.port.out.banking;
 
 public interface GetRegisteredBankAccountPort {
     RegisteredBankAccountAggregateIdentifier getRegisteredBankAccount(String membershipId);

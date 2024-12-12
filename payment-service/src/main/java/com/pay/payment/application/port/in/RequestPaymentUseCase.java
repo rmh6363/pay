@@ -10,5 +10,5 @@ public interface RequestPaymentUseCase {
     // 원래대로라면,, command . start date, end date
     List<Payment> getNormalStatusPayments();
 
-    void finishPayment(FinishSettlementCommand command);
+    Payment finishPayment(FinishSettlementCommand command);
 }

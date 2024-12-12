@@ -1,9 +1,11 @@
 package com.pay.settlement.tasklet;
 
-import com.pay.settlement.adapter.out.service.Payment;
-import com.pay.settlement.port.out.GetRegisteredBankAccountPort;
-import com.pay.settlement.port.out.PaymentPort;
-import com.pay.settlement.port.out.RegisteredBankAccountAggregateIdentifier;
+import com.pay.settlement.adapter.out.service.payment.Payment;
+import com.pay.settlement.port.out.banking.GetRegisteredBankAccountPort;
+import com.pay.settlement.port.out.franchise.GetRegisteredFranchisePort;
+import com.pay.settlement.port.out.franchise.RegisteredFranchise;
+import com.pay.settlement.port.out.payment.PaymentPort;
+import com.pay.settlement.port.out.banking.RegisteredBankAccountAggregateIdentifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -20,22 +22,22 @@ import java.util.Map;
 public class SettlementTasklet implements  Tasklet {
     private final GetRegisteredBankAccountPort getRegisteredBankAccountPort;
     private final PaymentPort paymentPort;
+
+    private final GetRegisteredFranchisePort getRegisteredFranchisePort;
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext){
         // 1. payment service 에서 결제 완료된 결제 내역을 조회한다.
         List<Payment> normalStatusPaymentList = paymentPort.getNormalStatusPayments();
 
-        // 2. 각 결제 내역의 franchiseId 에 해당하는 멤버십 정보(membershipId)에 대한
+        // 2. 각 결제 내역의 franchiseId 에 해당하는 프렌차이즈 정보에 대한
         // 뱅킹 정보(계좌번호) 를 가져와서
         Map<String, FirmbankingRequestInfo> franchiseIdToBankAccountMap = new HashMap<>();
         for (Payment payment : normalStatusPaymentList) {
-            RegisteredBankAccountAggregateIdentifier entity = getRegisteredBankAccountPort.getRegisteredBankAccount(payment.getFranchiseId());
-            franchiseIdToBankAccountMap.put(payment.getFranchiseId()
-            , new FirmbankingRequestInfo(entity.getBankName(), entity.getBankAccountNumber()));
+            RegisteredFranchise entity = getRegisteredFranchisePort.getRegisteredFranchisePort(payment.getFranchiseId());
+            franchiseIdToBankAccountMap.put(payment.getFranchiseId(), new FirmbankingRequestInfo(entity.getBankName(), entity.getBankAccountNumber()));
         }
 
         // 3. 각 franchiseId 별로, 정산 금액을 계산해주고
-        // 수수료를 제하지 않았어요.
         for (Payment payment : normalStatusPaymentList) {
             FirmbankingRequestInfo firmbankingRequestInfo = franchiseIdToBankAccountMap.get(payment.getFranchiseId());
             double fee = Double.parseDouble(payment.getFranchiseFeeRate());

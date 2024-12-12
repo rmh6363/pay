@@ -1,9 +1,8 @@
-package com.pay.settlement.adapter.out.service;
+package com.pay.settlement.adapter.out.service.banking;
 
 import com.pay.common.CommonHttpClient;
-import com.pay.settlement.port.out.GetRegisteredBankAccountPort;
-import com.pay.settlement.port.out.RegisteredBankAccountAggregateIdentifier;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.pay.settlement.port.out.banking.GetRegisteredBankAccountPort;
+import com.pay.settlement.port.out.banking.RegisteredBankAccountAggregateIdentifier;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -49,8 +48,8 @@ public class BankingServiceAdapter implements GetRegisteredBankAccountPort {
         try {
             ObjectMapper mapper = new ObjectMapper();
             RequestFirmbankingRequest request = new RequestFirmbankingRequest(
-                    "fastcampuspay",
-                    "111-222-333",
+                    "pay",
+                    "123-333-9999",
                     bankName,
                     bankAccountNumber,
                     moneyAmount);

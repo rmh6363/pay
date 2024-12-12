@@ -63,7 +63,7 @@ public class PaymentService implements RequestPaymentUseCase {
     }
 
     @Override
-    public void finishPayment(FinishSettlementCommand command) {
-        createPaymentPort.changePaymentRequestStatus(command.getPaymentId(), 2);
+    public Payment finishPayment(FinishSettlementCommand command) {
+        return createPaymentPort.changePaymentRequestStatus(command.getPaymentId(), 2);
     }
 }

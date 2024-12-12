@@ -1,7 +1,8 @@
-package com.pay.settlement.adapter.out.service;
+package com.pay.settlement.adapter.out.service.payment;
 
 import com.pay.common.CommonHttpClient;
-import com.pay.settlement.port.out.PaymentPort;
+import com.pay.settlement.adapter.out.service.FinishSettlementRequest;
+import com.pay.settlement.port.out.payment.PaymentPort;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;

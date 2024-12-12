@@ -1,4 +1,4 @@
-package com.pay.settlement.port.out;
+package com.pay.settlement.port.out.banking;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -43,11 +43,13 @@ public class PaymentPersistenceAdapter implements CreatePaymentPort {
     }
 
     @Override
-    public void changePaymentRequestStatus(String paymentId, int status) {
+    public Payment changePaymentRequestStatus(String paymentId, int status) {
         Optional<PaymentJpaEntity> paymentJpaEntity = paymentRepository.findById(Long.parseLong(paymentId));
         if (paymentJpaEntity.isPresent()) {
             paymentJpaEntity.get().setPaymentStatus(status);
-            paymentRepository.save(paymentJpaEntity.get());
+            PaymentJpaEntity entity =  paymentRepository.save(paymentJpaEntity.get());
+            return mapper.mapToDomainEntity(entity);
         }
+        return null;
     }
 }

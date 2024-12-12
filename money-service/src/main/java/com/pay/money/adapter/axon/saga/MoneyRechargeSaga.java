@@ -88,7 +88,7 @@ public class MoneyRechargeSaga {
                 , event.getFromBankName()
                 , event.getFromBankAccountNumber()
                 , "pay"
-                , "123456789"
+                , "123-333-9999"
                 , event.getAmount()
         )).whenComplete(
                 (result, throwable) -> {
