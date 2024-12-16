@@ -12,17 +12,19 @@ public class Membership {
     @Getter private final String email;
     @Getter private final String address;
     @Getter private final boolean isValid;
+    @Getter private final String refreshToken;
     @Getter private final String aggregateIdentifier;
 
     public static Membership generateMember(
             MembershipId membershipId, MembershipName membershipName, MembershipEmail membershipEmail, MembershipAddress membershipAddress, MembershipIsValid membershipIsValid,
-            MembershipAggregateIdentifier membershipAggregateIdentifier) {
+            MembershipRefreshToken membershipRefreshToken, MembershipAggregateIdentifier membershipAggregateIdentifier) {
         return new Membership(
                 membershipId.membershipId,
                 membershipName.nameValue,
                 membershipEmail.emailValue,
                 membershipAddress.addressValue,
                 membershipIsValid.isValidValue,
+                membershipRefreshToken.membershipRefreshToken,
                 membershipAggregateIdentifier.aggregateIdentifier
         );
     }
@@ -65,6 +67,13 @@ public class Membership {
             this.isValidValue = value;
         }
         boolean isValidValue;
+    }
+    @Value
+    public static class MembershipRefreshToken {
+        public MembershipRefreshToken(String value) {
+            this.membershipRefreshToken = value;
+        }
+        String membershipRefreshToken;
     }
 
     @Value

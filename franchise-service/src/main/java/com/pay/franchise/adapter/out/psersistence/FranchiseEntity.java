@@ -39,4 +39,7 @@ public class FranchiseEntity {
         this.bankAccountNumber = bankAccountNumber;
         this.isValid = isValid;
     }
+    public FranchiseEntity clone() {
+        return new FranchiseEntity(this.name, this.contact, this.bankName, this.bankAccountNumber, this.isValid);
+    }
 }

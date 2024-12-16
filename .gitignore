@@ -74,3 +74,5 @@ coverage/
 *.bak
 *.tmp
 *.swp
+init-vault.sh
+application.yml

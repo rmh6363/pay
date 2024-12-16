@@ -29,6 +29,7 @@ public class ModifyMembershipService implements ModifyMembershipUseCase {
                 new Membership.MembershipEmail(command.getEmail()),
                 new Membership.MembershipAddress(command.getAddress()),
                 new Membership.MembershipIsValid(command.getIsValid()),
+                new Membership.MembershipRefreshToken(""),
                 new Membership.MembershipAggregateIdentifier(command.getAggregateIdentifier())
         );
         // entity -> Membership

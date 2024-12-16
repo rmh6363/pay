@@ -24,6 +24,7 @@ dependencies {
     implementation 'org.apache.kafka:kafka-clients:3.5.1' // Kafka 클라이언트
     implementation group: 'org.axonframework', name: 'axon-configuration', version: "$axonVersion"
     implementation group: 'org.axonframework', name: 'axon-spring-boot-starter', version: "$axonVersion"
+    implementation group: 'org.springframework.vault', name: 'spring-vault-core', version: '2.3.3'
 }
 
 test {

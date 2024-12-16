@@ -1,19 +1,29 @@
-#spring:
-#  # Database
-#  datasource:
-#    driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://121.143.176.115:5432/pay
-#    platform: postgres
-#    username: pay
-#    password: pay9592!@#
-#  # jpa properties
-#  jpa:
-#    hibernate:
-#      ddl-auto: update # When you launch the application for the first time - switch "none" at "create"
-#    show-sql: true
-#    database: postgresql
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
-#    open-in-view: false
-#    generate-ddl: true
+spring:
+  # Database
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/pay?useSSL=false&allowPublicKeyRetrieval=true
+    username: mysqluser
+    password: mysqlpw
+  cloud:
+    vault:
+      token: 00000000-0000-0000-0000-000000000000
+      scheme: http
+      host: localhost
+      port: 8200
+  # jpa properties
 
-#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
+  jpa:
+    hibernate:
+      ddl-auto: none # 첫 실행 시 "none"으로 변경
+    show-sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect # MySQL 버전에 맞게 설정
+    open-in-view: false
+    generate-ddl: true
+jwt:
+  secret: NYd4nEtyLtcU7cpS/1HTFVmQJd7MmrP+HafWoXZjWNOL7qKccOOUfQNEx5yvG6dfdpuBeyMs9eEbRmdBrPQCNg==
+##spring.clout.vault.token=hvs.RSBaRz02bBXLdOplSNvy5eVnFaxpX/M/vVrvDTWTtf8GwekblmgLlKuvy8oDVKLj6Yg=
+##spring.clout.vault.scheme=http
+##spring.clout.vault.host=localhost
+##spring.clout.vault.port=8200

@@ -33,6 +33,7 @@ public class RegisterMembershipControllerTest {
                 new Membership.MembershipEmail("email"),
                 new Membership.MembershipAddress("address"),
                 new Membership.MembershipIsValid(true),
+                new Membership.MembershipRefreshToken(""),
                 new Membership.MembershipAggregateIdentifier("")
         );
         mockMvc.perform(MockMvcRequestBuilders.post("/membership/register/")

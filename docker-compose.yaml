@@ -11,7 +11,7 @@ services:
     volumes:
       - axonserver-data:/axonserver/data
       - axonserver-events:/axonserver/events
-      - axonserver-config:/axonserver/config:ro
+      - axonserver-config:/axonserver/config
   mysql:
     image: mysql:8.0
     networks:
@@ -25,9 +25,9 @@ services:
       - "3306:3306"
     environment:
       - TZ=Asia/Seoul
-      - MYSQL_ROOT_PASSWORD=rootpassword
-      - MYSQL_USER=mysqluser
-      - MYSQL_PASSWORD=mysqlpw
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
 
   membership-service:
     image: shalsgh63/pay-membership-service:1.0.3
@@ -37,20 +37,26 @@ services:
       - "8081:8080"
     depends_on:
       - mysql
+      - vault
     environment:
       - AXON_AXONSERVER_SERVERS=axon-server:8124
       - AXON_SERIALIZER_EVENTS=jackson
       - AXON_SERIALIZER_MESSAGES=jackson
       - AXON_SERIALIZER_GENERAL=xstream
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/pay?useSSL=false&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=mysqluser
-      - SPRING_DATASOURCE_PASSWORD=mysqlpw
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:29092
       - LOGGING_TOPIC=pay.logging.out.stdout
       - TASK_TOPIC=pay.task.topic
-
+      - JWT_SECRET=${JWT_SECRET}
+      - SPRING_CLOUD_VAULT_TOKEN=${SPRING_CLOUD_VAULT_TOKEN}
+      - SPRING_CLOUD_VAULT_SCHEME=${SPRING_CLOUD_VAULT_SCHEME}
+      - SPRING_CLOUD_VAULT_HOST=${SPRING_CLOUD_VAULT_HOST}
+      - SPRING_CLOUD_VAULT_PORT=${SPRING_CLOUD_VAULT_PORT}
+      - LOGGING_LEVEL_ROOT=INFO
   banking-service:
     image: shalsgh63/pay-banking-service:1.0.5
     networks:
@@ -66,14 +72,18 @@ services:
       - AXON_SERIALIZER_MESSAGES=jackson
       - AXON_SERIALIZER_GENERAL=xstream
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/pay?useSSL=false&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=mysqluser
-      - SPRING_DATASOURCE_PASSWORD=mysqlpw
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
       - SPRING_JPA_HIBERNATE_DDL_AUTO=none
       - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:29092
       - LOGGING_TOPIC=pay.logging.out.stdout
       - TASK_TOPIC=pay.task.topic
       - SERVICE_MEMBERSHIP_URL=http://membership-service:8080
+      - SPRING_CLOUD_VAULT_TOKEN=${SPRING_CLOUD_VAULT_TOKEN}
+      - SPRING_CLOUD_VAULT_SCHEME=${SPRING_CLOUD_VAULT_SCHEME}
+      - SPRING_CLOUD_VAULT_HOST=${SPRING_CLOUD_VAULT_HOST}
+      - SPRING_CLOUD_VAULT_PORT=${SPRING_CLOUD_VAULT_PORT}
 
   money-service:
     image: shalsgh63/pay-money-service:1.0.0
@@ -90,8 +100,8 @@ services:
       - AXON_SERIALIZER_MESSAGES=jackson
       - AXON_SERIALIZER_GENERAL=xstream
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/pay?useSSL=false&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=mysqluser
-      - SPRING_DATASOURCE_PASSWORD=mysqlpw
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
       - SPRING_JPA_HIBERNATE_DDL_AUTO=none
       - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:29092
@@ -100,6 +110,70 @@ services:
       - TASK_RESULT_TOPIC=pay.result.topic
       - SERVICE_MEMBERSHIP_URL=http://membership-service:8080
       - SERVICE_BANKING_URL=http://banking-service:8080
+      - SPRING_CLOUD_VAULT_TOKEN=${SPRING_CLOUD_VAULT_TOKEN}
+      - SPRING_CLOUD_VAULT_SCHEME=${SPRING_CLOUD_VAULT_SCHEME}
+      - SPRING_CLOUD_VAULT_HOST=${SPRING_CLOUD_VAULT_HOST}
+      - SPRING_CLOUD_VAULT_PORT=${SPRING_CLOUD_VAULT_PORT}
+  remittance-service:
+    image: shalsgh63/pay-remittance-service:1.0.0
+    networks:
+      - pay_network
+    ports:
+      - "8084:8080"
+    depends_on:
+      - axon-server
+      - mysql
+    environment:
+      - AXON_AXONSERVER_SERVERS=axon-server:8124
+      - AXON_SERIALIZER_EVENTS=jackson
+      - AXON_SERIALIZER_MESSAGES=jackson
+      - AXON_SERIALIZER_GENERAL=xstream
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/pay?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+      - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:29092
+      - LOGGING_TOPIC=pay.logging.out.stdout
+      - TASK_TOPIC=pay.task.topic
+      - TASK_RESULT_TOPIC=pay.result.topic
+      - SERVICE_MEMBERSHIP_URL=http://membership-service:8080
+      - SERVICE_BANKING_URL=http://banking-service:8080
+      - SERVICE_MONEY_URL=http://money-service:8080
+      - SPRING_CLOUD_VAULT_TOKEN=${SPRING_CLOUD_VAULT_TOKEN}
+      - SPRING_CLOUD_VAULT_SCHEME=${SPRING_CLOUD_VAULT_SCHEME}
+      - SPRING_CLOUD_VAULT_HOST=${SPRING_CLOUD_VAULT_HOST}
+      - SPRING_CLOUD_VAULT_PORT=${SPRING_CLOUD_VAULT_PORT}
+
+  payment-service:
+    image: shalsgh63/pay-payment-service:1.0.0
+    networks:
+      - pay_network
+    ports:
+      - "8085:8080"
+    depends_on:
+      - mysql
+    environment:
+      - AXON_AXONSERVER_SERVERS=axon-server:8124
+      - AXON_SERIALIZER_EVENTS=jackson
+      - AXON_SERIALIZER_MESSAGES=jackson
+      - AXON_SERIALIZER_GENERAL=xstream
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/pay?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+      - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:29092
+      - LOGGING_TOPIC=pay.logging.out.stdout
+      - TASK_TOPIC=pay.task.topic
+      - TASK_RESULT_TOPIC=pay.result.topic
+      - SERVICE_MEMBERSHIP_URL=http://membership-service:8080
+      - SERVICE_BANKING_URL=http://banking-service:8080
+      - SERVICE_MONEY_URL=http://money-service:8080
+      - SPRING_CLOUD_VAULT_TOKEN=${SPRING_CLOUD_VAULT_TOKEN}
+      - SPRING_CLOUD_VAULT_SCHEME=${SPRING_CLOUD_VAULT_SCHEME}
+      - SPRING_CLOUD_VAULT_HOST=${SPRING_CLOUD_VAULT_HOST}
+      - SPRING_CLOUD_VAULT_PORT=${SPRING_CLOUD_VAULT_PORT}
 
   franchise-service:
     image: shalsgh63/pay-franchise-service:1.0.0
@@ -115,14 +189,18 @@ services:
       - AXON_SERIALIZER_MESSAGES=jackson
       - AXON_SERIALIZER_GENERAL=xstream
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/pay?useSSL=false&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=mysqluser
-      - SPRING_DATASOURCE_PASSWORD=mysqlpw
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
       - SPRING_JPA_HIBERNATE_DDL_AUTO=none
       - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:29092
       - LOGGING_TOPIC=pay.logging.out.stdout
       - TASK_TOPIC=pay.task.topic
       - TASK_RESULT_TOPIC=pay.result.topic
+      - SPRING_CLOUD_VAULT_TOKEN=${SPRING_CLOUD_VAULT_TOKEN}
+      - SPRING_CLOUD_VAULT_SCHEME=${SPRING_CLOUD_VAULT_SCHEME}
+      - SPRING_CLOUD_VAULT_HOST=${SPRING_CLOUD_VAULT_HOST}
+      - SPRING_CLOUD_VAULT_PORT=${SPRING_CLOUD_VAULT_PORT}
 
 
   money-query-service:
@@ -142,8 +220,8 @@ services:
       - AXON_SERIALIZER_MESSAGES=jackson
       - AXON_SERIALIZER_GENERAL=xstream
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/pay?useSSL=false&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=mysqluser
-      - SPRING_DATASOURCE_PASSWORD=mysqlpw
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
       - SPRING_JPA_HIBERNATE_DDL_AUTO=none
       - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:29092
@@ -153,58 +231,12 @@ services:
       - SERVICE_MONEY_URL=http://money-service:8080
       - ACCESS_KEY_ID=${ACCESS_KEY_ID}
       - SECRET_ACCESS_KEY=${SECRET_ACCESS_KEY}
+      - SPRING_CLOUD_VAULT_TOKEN=${SPRING_CLOUD_VAULT_TOKEN}
+      - SPRING_CLOUD_VAULT_SCHEME=${SPRING_CLOUD_VAULT_SCHEME}
+      - SPRING_CLOUD_VAULT_HOST=${SPRING_CLOUD_VAULT_HOST}
+      - SPRING_CLOUD_VAULT_PORT=${SPRING_CLOUD_VAULT_PORT}
 
-  remittance-service:
-    image: shalsgh63/pay-remittance-service:1.0.0
-    networks:
-      - pay_network
-    ports:
-      - "8084:8080"
-    depends_on:
-      - axon-server
-      - mysql
-    environment:
-      - AXON_AXONSERVER_SERVERS=axon-server:8124
-      - AXON_SERIALIZER_EVENTS=jackson
-      - AXON_SERIALIZER_MESSAGES=jackson
-      - AXON_SERIALIZER_GENERAL=xstream
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/pay?useSSL=false&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=mysqluser
-      - SPRING_DATASOURCE_PASSWORD=mysqlpw
-      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
-      - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:29092
-      - LOGGING_TOPIC=pay.logging.out.stdout
-      - TASK_TOPIC=pay.task.topic
-      - TASK_RESULT_TOPIC=pay.result.topic
-      - SERVICE_MEMBERSHIP_URL=http://membership-service:8080
-      - SERVICE_BANKING_URL=http://banking-service:8080
-      - SERVICE_MONEY_URL=http://money-service:8080
-  payment-service:
-    image: shalsgh63/pay-payment-service:1.0.0
-    networks:
-      - pay_network
-    ports:
-      - "8085:8080"
-    depends_on:
-      - mysql
-    environment:
-      - AXON_AXONSERVER_SERVERS=axon-server:8124
-      - AXON_SERIALIZER_EVENTS=jackson
-      - AXON_SERIALIZER_MESSAGES=jackson
-      - AXON_SERIALIZER_GENERAL=xstream
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/pay?useSSL=false&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=mysqluser
-      - SPRING_DATASOURCE_PASSWORD=mysqlpw
-      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
-      - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:29092
-      - LOGGING_TOPIC=pay.logging.out.stdout
-      - TASK_TOPIC=pay.task.topic
-      - TASK_RESULT_TOPIC=pay.result.topic
-      - SERVICE_MEMBERSHIP_URL=http://membership-service:8080
-      - SERVICE_BANKING_URL=http://banking-service:8080
-      - SERVICE_MONEY_URL=http://money-service:8080
+
   settlement-service:
     image: shalsgh63/pay-settlement-service:1.0.0
     networks:
@@ -219,8 +251,8 @@ services:
       - AXON_SERIALIZER_MESSAGES=jackson
       - AXON_SERIALIZER_GENERAL=xstream
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/pay?useSSL=false&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=mysqluser
-      - SPRING_DATASOURCE_PASSWORD=mysqlpw
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:29092
@@ -232,6 +264,10 @@ services:
       - SERVICE_FRANCHISE_URL=http://franchise-service:8080
       - SERVICE_PAYMENT_URL=http://payment-service:8080
       - SPRING_BATCH_INITIALIZE_SCHEMA=always
+      - SPRING_CLOUD_VAULT_TOKEN=${SPRING_CLOUD_VAULT_TOKEN}
+      - SPRING_CLOUD_VAULT_SCHEME=${SPRING_CLOUD_VAULT_SCHEME}
+      - SPRING_CLOUD_VAULT_HOST=${SPRING_CLOUD_VAULT_HOST}
+      - SPRING_CLOUD_VAULT_PORT=${SPRING_CLOUD_VAULT_PORT}
 
   zookeeper:
     image: 'bitnami/zookeeper:latest'
@@ -302,7 +338,27 @@ services:
       - LOGGING_TOPIC=pay.logging.out.stdout
       - TASK_TOPIC=pay.task.topic
       - TASK_RESULT_TOPIC=pay.result.topic
+
+  vault:
+    image: vault:1.13.1
+    networks:
+      - pay_network
+    container_name: vault
+    ports:
+      - "8200:8200"
+    restart: no
+    cap_add:
+      - IPC_LOCK
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=00000000-0000-0000-0000-000000000000
+      - VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200
+    volumes:
+      - vault-data:/vault/file
+      - ${PWD}/init-vault.sh:/init-vault.sh  # 초기화 스크립트를 마운트
+
+
 volumes:
+  vault-data:
   axonserver-data:
     driver: local
     driver_opts:

@@ -4,7 +4,9 @@ plugins {
     id 'java'
     id 'com.palantir.docker' version '0.25.0'
 }
-
+ext{
+    axonVersion = "4.8.0"
+}
 group 'com.pay.membership'
 version '1.0.3'
 
@@ -40,6 +42,12 @@ dependencies {
 //    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.4'
     runtimeOnly 'mysql:mysql-connector-java'
     implementation project(path:':common')
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+    implementation group: 'org.springframework.vault', name: 'spring-vault-core', version: '2.3.3'
+    implementation group: 'org.axonframework', name: 'axon-configuration', version: "$axonVersion"
+    implementation group: 'org.axonframework', name: 'axon-spring-boot-starter', version: "$axonVersion"
 
 }
 
