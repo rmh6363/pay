@@ -2,10 +2,14 @@
 plugins {
     id 'org.springframework.boot' version '2.5.2'
     id 'java'
+    id 'com.palantir.docker' version '0.25.0'
 }
-
+ext{
+    axonVersion = "4.8.0"
+}
 group 'com.pay.membership'
-version '1.0-SNAPSHOT'
+version '1.0.3'
+
 compileJava{
     targetCompatibility=11
 }
@@ -34,9 +38,34 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.jetbrains:annotations:23.0.0'
     testImplementation 'junit:junit:4.13.1'
+//    runtimeOnly 'org.postgresql:postgresql'
+//    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.4'
+    runtimeOnly 'mysql:mysql-connector-java'
+    implementation project(path:':common')
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+    implementation group: 'org.springframework.vault', name: 'spring-vault-core', version: '2.3.3'
+    implementation group: 'org.axonframework', name: 'axon-configuration', version: "$axonVersion"
+    implementation group: 'org.axonframework', name: 'axon-spring-boot-starter', version: "$axonVersion"
+
 }
 
 test {
     sourceCompatibility=11
     useJUnitPlatform()
+}
+docker {
+    println(tasks.bootJar.outputs.files)
+    // 이미지 이름
+    name "shalsgh63/"+rootProject.name+'-'+project.name + ":" + version
+
+    // Dokcerfile 대상 지정
+    dockerfile file('../Dockerfile')
+
+    // 어떤 파일들을 Dokcerfile에 복사할 것인지
+    files tasks.bootJar.outputs.files
+
+    // Dokcerfile에 전달할 인자
+    buildArgs(['JAR_FILE': tasks.bootJar.outputs.files.singleFile.name])
 }

@@ -1,0 +1,40 @@
+package com.pay.money.adapter.out.service.membership;
+
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pay.common.CommonHttpClient;
+import com.pay.common.ExternalSystemAdapter;
+import com.pay.money.application.port.out.membership.MembershipPort;
+import com.pay.money.application.port.out.membership.MembershipStatus;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+
+@ExternalSystemAdapter
+@RequiredArgsConstructor
+public class MembershipServiceAdapter implements MembershipPort {
+
+    private final CommonHttpClient membershipServiceHttpClient;
+
+    @Value("${service.membership.url}")
+    private String membershipServiceEndpoint;
+
+    @Override
+    public MembershipStatus getMembershipStatus(String membershipId) {
+
+        String buildUrl = String.join("/", this.membershipServiceEndpoint, "membership", membershipId);
+        try {
+            String jsonResponse = membershipServiceHttpClient.sendGetRequest(buildUrl).body();
+            ObjectMapper mapper = new ObjectMapper();
+
+            Membership mem = mapper.readValue(jsonResponse, Membership.class);
+            if (mem.isValid()){
+                return new MembershipStatus(mem.getMembershipId(), true,mem.getAggregateIdentifier());
+            } else{
+                return new MembershipStatus(mem.getMembershipId(), false,mem.getAggregateIdentifier());
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

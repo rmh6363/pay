@@ -9,7 +9,8 @@
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
-
+.gradle/
+.idea
 # Package Files #
 *.jar
 *.war
@@ -25,3 +26,56 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+*.probe
+*.bin
+*.lock
+*.xml
+
+# 빌드 아티팩트
+target/
+bin/
+build/
+dist/
+db/data
+# IDE 및 편집기 설정 파일
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.iml
+
+# 환경 설정 파일
+.env
+config/secrets.json
+*.local
+axon-server-se/config
+axon-server-se/data
+axon-server-se/events
+
+
+# 의존성 관리 파일
+node_modules/
+venv/
+*.egg-info/
+__pycache__/
+
+# OS 관련 파일
+.DS_Store
+Thumbs.db
+
+# Docker 관련 파일
+*.tar
+*.img
+docker-compose.override.yml
+
+# 테스트 파일
+coverage/
+*.cover
+*.coverage
+
+# 기타
+*.bak
+*.tmp
+*.swp
+init-vault.sh
+application.yml

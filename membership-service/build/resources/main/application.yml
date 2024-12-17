@@ -1,0 +1,29 @@
+spring:
+  # Database
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/pay?useSSL=false&allowPublicKeyRetrieval=true
+    username: mysqluser
+    password: mysqlpw
+  cloud:
+    vault:
+      token: 00000000-0000-0000-0000-000000000000
+      scheme: http
+      host: localhost
+      port: 8200
+  # jpa properties
+
+  jpa:
+    hibernate:
+      ddl-auto: none # 첫 실행 시 "none"으로 변경
+    show-sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect # MySQL 버전에 맞게 설정
+    open-in-view: false
+    generate-ddl: true
+jwt:
+  secret: NYd4nEtyLtcU7cpS/1HTFVmQJd7MmrP+HafWoXZjWNOL7qKccOOUfQNEx5yvG6dfdpuBeyMs9eEbRmdBrPQCNg==
+##spring.clout.vault.token=hvs.RSBaRz02bBXLdOplSNvy5eVnFaxpX/M/vVrvDTWTtf8GwekblmgLlKuvy8oDVKLj6Yg=
+##spring.clout.vault.scheme=http
+##spring.clout.vault.host=localhost
+##spring.clout.vault.port=8200
