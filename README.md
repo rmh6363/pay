@@ -101,6 +101,31 @@
 ### Sequence Diagram Example (정산 프로세스)
 ![Settlement_Sequence_Example](md_resource/Settlement_Sequence_Example.png)
 
+## Service Endpoint & Swagger UI
+- Membership Service
+    - http://localhost:8081/membership/
+    - http://localhost:8081/swagger-ui.html
+- Banking Service
+    - http://localhost:8082/banking/
+    - http://localhost:8082/swagger-ui.html
+- Money Service
+    - http://localhost:8083/money/
+    - http://localhost:8083/swagger-ui.html
+- money-query-service (CQRS View Service)
+    - http://localhost:8087/money/query/
+    - http://localhost:8087/swagger-ui.html
+- Remittance Service
+    - http://localhost:8084/remittance/
+    - http://localhost:8084/swagger-ui.html
+- Payment Service
+    - http://localhost:8085/payment/
+    - http://localhost:8085/swagger-ui.html
+- Settlement Service
+    - http://localhost:8088/settlement/
+    - http://localhost:8088/swagger-ui.html
+- Franchise Service
+  - http://localhost:8086/settlement/
+  - http://localhost:8086/swagger-ui.html
 
 # Infra Overview
 ![Overall Architecture](md_resource/infra.jpeg)
