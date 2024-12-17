@@ -17,5 +17,7 @@ public class CreateRegisteredBankAccountEvent extends SelfValidating<CreateRegis
     private String bankName;
     private String bankAccountNumber;
 
+    private String aggregateIdentifier;
+
 
 }

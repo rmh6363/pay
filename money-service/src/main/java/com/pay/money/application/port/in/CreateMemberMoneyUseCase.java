@@ -1,5 +1,7 @@
 package com.pay.money.application.port.in;
 
+import com.pay.money.domain.MemberMoney;
+
 public interface CreateMemberMoneyUseCase {
-    void createMemberMoney(CreateMemberMoneyCommand command);
+    MemberMoney createMemberMoney(CreateMemberMoneyCommand command);
 }

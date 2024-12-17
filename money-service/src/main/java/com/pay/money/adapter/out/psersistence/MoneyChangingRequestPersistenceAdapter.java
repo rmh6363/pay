@@ -67,12 +67,12 @@ public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyPort
     }
 
     @Override
-    public void createMemberMoney(MemberMoney.MembershipId memberId, MemberMoney.MoneyAggregateIdentifier aggregateIdentifier) {
+    public MemberMoneyJpaEntity createMemberMoney(MemberMoney.MembershipId memberId, MemberMoney.MoneyAggregateIdentifier aggregateIdentifier) {
         MemberMoneyJpaEntity entity = new MemberMoneyJpaEntity(
                 Long.parseLong(memberId.getMembershipId()),
                 0,
                 aggregateIdentifier.getMoneyAggregateIdentifier()
         );
-        springDataMemberMoneyRepository.save(entity);
+        return springDataMemberMoneyRepository.save(entity);
     }
 }

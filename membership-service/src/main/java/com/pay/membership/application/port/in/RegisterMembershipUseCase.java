@@ -5,5 +5,6 @@ import com.pay.membership.domain.Membership;
 
 public interface RegisterMembershipUseCase {
     Membership registerMembership(RegisterMembershipCommand command);
+    void registerMembershipEvent(RegisterMembershipCommand command);
 
 }

@@ -15,18 +15,20 @@ public class MemberMoney {
 
     // 잔액
     @Getter private final int balance;
-
+    @Getter private final String aggregateIdentifier;
     // @Getter private final int linkedBankAccount;
 
     public static MemberMoney generateMemberMoney (
             MemberMoneyId memberMoneyId,
             MembershipId membershipId,
-            MoneyBalance moneyBalance
+            MoneyBalance moneyBalance,
+            MoneyAggregateIdentifier moneyAggregateIdentifier
     ){
         return new MemberMoney(
                 memberMoneyId.memberMoneyId,
                 membershipId.membershipId,
-                moneyBalance.balance
+                moneyBalance.balance,
+                moneyAggregateIdentifier.getMoneyAggregateIdentifier()
         );
     }
 

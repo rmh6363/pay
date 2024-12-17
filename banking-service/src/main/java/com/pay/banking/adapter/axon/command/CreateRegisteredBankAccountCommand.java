@@ -18,6 +18,8 @@ public class CreateRegisteredBankAccountCommand extends SelfValidating<CreateReg
     private String bankAccountNumber;
     private String bankName;
 
+    private String aggregateIdentifier;
+
 
 
 }

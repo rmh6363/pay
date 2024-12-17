@@ -10,4 +10,7 @@ import lombok.NoArgsConstructor;
 public class MembershipStatus {
     private String membershipId;
     private boolean isValid;
+
+    public String aggregateIdentifier;
+
 }

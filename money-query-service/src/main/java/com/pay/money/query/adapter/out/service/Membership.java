@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Membership {
     private String membershipId;
-    private String name;
-    private String email;
-    private String address;
-    private boolean isValid;
-    private String aggregateIdentifier;
+    private  String name;
+    private  String email;
+    private  String address;
+    private  boolean isValid;
+    private  String aggregateIdentifier;
+    private String refreshToken;
 }

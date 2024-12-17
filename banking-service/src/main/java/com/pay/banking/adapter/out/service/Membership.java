@@ -16,4 +16,6 @@ public class Membership {
     private String address;
     private boolean isValid;
     private String aggregateIdentifier;
+
+    private String refreshToken;
 }

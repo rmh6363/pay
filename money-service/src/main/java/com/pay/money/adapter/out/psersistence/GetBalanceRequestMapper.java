@@ -11,7 +11,8 @@ public class GetBalanceRequestMapper {
         return MemberMoney.generateMemberMoney(
                 new MemberMoney.MemberMoneyId(memberMoneyJpaEntity.getMemberMoneyId()+""),
                 new MemberMoney.MembershipId(memberMoneyJpaEntity.getMembershipId()+""),
-                new MemberMoney.MoneyBalance(memberMoneyJpaEntity.getBalance())
+                new MemberMoney.MoneyBalance(memberMoneyJpaEntity.getBalance()),
+                new MemberMoney.MoneyAggregateIdentifier(memberMoneyJpaEntity.getAggregateIdentifier())
         );
     }
 }

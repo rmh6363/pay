@@ -1,4 +1,4 @@
-package com.pay.membership.application.port.in;
+package com.pay.membership.adapter.axon.command;
 
 import com.pay.common.SelfValidating;
 import lombok.Builder;
@@ -12,28 +12,30 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class RegisterMembershipCommand extends SelfValidating<RegisterMembershipCommand> {
+public class MembershipCreatedCommand extends SelfValidating<MembershipCreatedCommand> {
     @NonNull
     @NotBlank
-    private  final String name;
+    private  String name;
 
     @NonNull
     @NotBlank
-    private final String email;
+    private String email;
 
     @NonNull
     @NotBlank
-    private final String address;
+    private String address;
 
     @AssertTrue
-    private final Boolean isValid;
+    private Boolean isValid;
 
+    private String aggregateIdentifier;
 
-    public RegisterMembershipCommand(@NonNull String name, @NonNull String email, @NonNull String address, Boolean isValid) {
+    public MembershipCreatedCommand(@NonNull String name, @NonNull String email, @NonNull String address, Boolean isValid, String aggregateIdentifier) {
         this.name = name;
         this.email = email;
         this.address = address;
         this.isValid = isValid;
+        this.aggregateIdentifier = aggregateIdentifier;
         this.validateSelf();
     }
 }

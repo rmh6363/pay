@@ -4,6 +4,8 @@ import com.pay.banking.adapter.axon.command.CreateRegisteredBankAccountCommand;
 import com.pay.banking.adapter.axon.event.CreateRegisteredBankAccountEvent;
 import com.pay.banking.adapter.out.external.bank.BankAccount;
 import com.pay.banking.adapter.out.external.bank.GetBankAccountRequest;
+import com.pay.banking.application.port.out.GetMembershipPort;
+import com.pay.banking.application.port.out.MembershipStatus;
 import com.pay.banking.application.port.out.RequestBankAccountInfoPort;
 import com.pay.common.event.CheckRegisteredBankAccountCommand;
 import com.pay.common.event.CheckedRegisteredBankAccountEvent;
@@ -32,9 +34,16 @@ public class RegisteredBankAccountAggregate {
     private String bankAccountNumber;
 
     @CommandHandler
-    public RegisteredBankAccountAggregate(@NotNull CreateRegisteredBankAccountCommand command){
+    public RegisteredBankAccountAggregate(@NotNull CreateRegisteredBankAccountCommand command,GetMembershipPort getMembershipPort){
         System.out.println("CreateRegisteredBankAccountCommand ");
-        apply(new CreateRegisteredBankAccountEvent(command.getMembershipId(),command.getBankName(),command.getBankAccountNumber()));
+        id = command.getAggregateIdentifier();
+        MembershipStatus membershipStatus = getMembershipPort.getMembership(command.getMembershipId());
+        apply(new CreateRegisteredBankAccountEvent(
+                command.getMembershipId(),
+                command.getBankName(),
+                command.getBankAccountNumber(),
+                membershipStatus.getAggregateIdentifier()
+        ));
 
     }
 
@@ -64,10 +73,11 @@ public class RegisteredBankAccountAggregate {
         );
 
     }
+
     @EventSourcingHandler
-    public void on(CreateRegisteredBankAccountEvent event){
+    public void on(CreateRegisteredBankAccountEvent event ){
         System.out.println("CreateRegisteredBankAccountEvent");
-        id = UUID.randomUUID().toString();
+        id = event.getAggregateIdentifier();
         membershipId = event.getMembershipId();
         bankAccountNumber = event.getBankAccountNumber();
         bankName = event.getBankName();

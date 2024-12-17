@@ -25,10 +25,6 @@ public class VaultConfig {
 
     @Bean
     public VaultTemplate vaultTemplate(){
-        System.out.println("vaultToken = " + vaultToken);
-        System.out.println("vaultScheme = " + vaultScheme);
-        System.out.println("vaultHost = " + vaultHost);
-        System.out.println("vaultPort = " + vaultPort);
         VaultEndpoint endpoint = VaultEndpoint.create(vaultHost,vaultPort);
         // vaultScheme: http https
         endpoint.setScheme(vaultScheme);

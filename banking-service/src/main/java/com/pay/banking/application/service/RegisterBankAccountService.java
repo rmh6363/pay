@@ -78,7 +78,7 @@ public class RegisterBankAccountService implements RegisterBankAccountUseCase {
 
     @Override
     public void registerBankAccountByEvent(RegisterBankAccountCommand command) {
-        commandGateway.send(new CreateRegisteredBankAccountCommand(command.getMembershipId(), command.getBankName(), command.getBankAccountNumber()))
+        commandGateway.send(new CreateRegisteredBankAccountCommand(command.getMembershipId(), command.getBankName(), command.getBankAccountNumber(),""))
                 .whenComplete(
                         (result,throwable) ->{
                             if (throwable != null){

@@ -15,14 +15,13 @@ public class RegisterMembershipController {
 
     private final RegisterMembershipUseCase registerMembershipUseCase;
     @PostMapping(path = "/membership/register")
-    Membership registerMembership(@RequestBody RegisterMembershipRequest request ){
+    void registerMembership(@RequestBody RegisterMembershipRequest request ){
         RegisterMembershipCommand command = RegisterMembershipCommand.builder()
                 .name(request.getName())
                 .address(request.getAddress())
                 .email(request.getEmail())
                 .isValid(true)
-                .aggregateIdentifier(request.getAggregateIdentifier())
                 .build();
-        return registerMembershipUseCase.registerMembership(command);
+        registerMembershipUseCase.registerMembershipEvent(command);
     }
 }

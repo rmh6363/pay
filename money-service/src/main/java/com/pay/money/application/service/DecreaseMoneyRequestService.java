@@ -40,44 +40,6 @@ public class DecreaseMoneyRequestService implements DecreaseMoneyRequestUseCase 
     private final GetBalancePort getBalancePort;
     @Override
     public MoneyChangingRequest decreaseMoneyRequest(DecreaseMoneyRequestCommand command) {
-        // 머니의충천,증액 과정
-        // 1. 고객 정보가 정상인지 확인(멤버)
-        MembershipStatus membershipStatus = membershipPort.getMembershipStatus(command.getTargetMembershipId());
-        if (!membershipStatus.isValid()){
-            return null;
-        }
-        // 2. 고객의 연동된 계좌가 있는지 확인, 고객의 연동된 계좌의 잔액이 충분한지 확인(뱅킹)
-
-        // 3. 법인 계좌 상태도 정상인지 확인(뱅킹)
-
-        // 4. 증액을 위한 기록. 요청 상태로 MoneyChangingRequest 생성
-
-        // 5. 펌뱅킹 수행하고(고객의 연동된 계좌 -> 페이의 법인 계좌)(뱅킹)
-
-        // 6-1. 결과 정상라면 ,성공이라고 MoneyChangingRequest 상태값 변경 후 리턴
-        // 성공 시에 멤버의 MemberMoney 값 증액
-        MemberMoneyJpaEntity memberMoneyJpaEntity = decreaseMoneyPort.decreaseMoney(
-                new MemberMoney.MembershipId(command.getTargetMembershipId()),
-                command.getAmount());
-        if (memberMoneyJpaEntity != null) {
-            return moneyChangingRequestMapper.mapToDomainEntity(decreaseMoneyPort.createMoneyChangingRequest(
-                    new MoneyChangingRequest.TargetMembershipId(command.getTargetMembershipId()),
-                    new MoneyChangingRequest.MoneyChangingType(0),
-                    new MoneyChangingRequest.ChangingMoneyAmount(command.getAmount()),
-                    new MoneyChangingRequest.MoneyChangingStatus(1),
-                    new MoneyChangingRequest.Uuid(UUID.randomUUID().toString())
-            ));
-
-        }
-
-        return null;
-        // 6-2. 결과 실패라면,실패라고 MoneyChangingRequest 상태값 변경 후 리턴
-
-
-    }
-
-    @Override
-    public MoneyChangingRequest decreaseMoneyRequestAsync(DecreaseMoneyRequestCommand command) {
         // Subtask
         // 각 서비스에 특정 membershipId 로 Validation 을 하기 위한 task
 
@@ -151,7 +113,10 @@ public class DecreaseMoneyRequestService implements DecreaseMoneyRequestUseCase 
         }
         // 5. Consume ok -> Logic exec
         return null;
+
+
     }
+
 
     @Override
     public void decreaseMoneyRequestByEvent(DecreaseMoneyRequestCommand command) {

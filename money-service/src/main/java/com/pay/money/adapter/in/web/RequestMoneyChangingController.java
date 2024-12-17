@@ -2,6 +2,7 @@ package com.pay.money.adapter.in.web;
 
 import com.pay.common.WebAdapter;
 import com.pay.money.application.port.in.*;
+import com.pay.money.domain.MemberMoney;
 import com.pay.money.domain.MoneyChangingRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,22 +36,7 @@ public class RequestMoneyChangingController {
         );
         return resultDetail;
     }
-    @PostMapping(path = "/money/increase-async")
-    MoneyChangingResultDetail increaseMoneyChangingRequestAsync(@RequestBody IncreaseMoneyChangingRequest request ){
-        IncreaseMoneyRequestCommand command = IncreaseMoneyRequestCommand.builder()
-                .targetMembershipId(request.getTargetMembershipId())
-                .amount(request.getAmount())
-                .build();
-        MoneyChangingRequest moneyChangingRequest = increaseMoneyRequestUseCase.increaseMoneyRequestAsync(command);
 
-        MoneyChangingResultDetail resultDetail = new MoneyChangingResultDetail(
-                moneyChangingRequest.getMoneyChangingRequestId(),
-                0,
-                1,
-                moneyChangingRequest.getChangingMoneyAmount()
-        );
-        return resultDetail;
-    }
     @PostMapping(path = "/money/decrease")
     MoneyChangingResultDetail decreaseMoneyChangingRequest(@RequestBody IncreaseMoneyChangingRequest request ){
         DecreaseMoneyRequestCommand command = DecreaseMoneyRequestCommand.builder()
@@ -67,22 +53,7 @@ public class RequestMoneyChangingController {
         );
         return resultDetail;
     }
-    @PostMapping(path = "/money/decrease-async")
-    MoneyChangingResultDetail decreaseMoneyChangingRequestAsync(@RequestBody IncreaseMoneyChangingRequest request ){
-        DecreaseMoneyRequestCommand command = DecreaseMoneyRequestCommand.builder()
-                .targetMembershipId(request.getTargetMembershipId())
-                .amount(request.getAmount())
-                .build();
-        MoneyChangingRequest moneyChangingRequest = decreaseMoneyRequestUseCase.decreaseMoneyRequestAsync(command);
 
-        MoneyChangingResultDetail resultDetail = new MoneyChangingResultDetail(
-                moneyChangingRequest.getMoneyChangingRequestId(),
-                1,
-                1,
-                moneyChangingRequest.getChangingMoneyAmount()
-        );
-        return resultDetail;
-    }
     @PostMapping(path = "/money/increase-eda")
     void increaseMoneyChangingRequestByEvent(@RequestBody IncreaseMoneyChangingRequest request) {
         IncreaseMoneyRequestCommand command = IncreaseMoneyRequestCommand.builder()
@@ -103,8 +74,8 @@ public class RequestMoneyChangingController {
     }
 
     @PostMapping(path = "/money/create-member-money")
-    void createMemberMoney (@RequestBody CreateMemberMoneyRequest request){
-        createMemberMoneyUseCase.createMemberMoney(CreateMemberMoneyCommand.builder()
+    MemberMoney createMemberMoney (@RequestBody CreateMemberMoneyRequest request){
+        return createMemberMoneyUseCase.createMemberMoney(CreateMemberMoneyCommand.builder()
                 .targetMembershipId(request.getTargetMembershipId())
                 .build());
     }
