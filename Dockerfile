@@ -1,6 +1,6 @@
 FROM gradle:jdk11-alpine as builder
 
-WORDIR /workspace/app
+WORKDIR /workspace/app
 
 COPY . /workspace/app
 
