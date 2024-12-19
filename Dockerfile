@@ -6,7 +6,7 @@ ARG MODULE
 WORKDIR /workspace/app
 
 # 현재 디렉토리의 모든 파일을 복사합니다.
-COPY . .
+COPY . /workspace/app
 
 # gradlew에 실행 권한을 부여합니다.
 RUN chmod +x ./gradlew
