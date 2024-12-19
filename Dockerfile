@@ -1,5 +1,7 @@
 FROM gradle:jdk11-alpine as builder
 
+# MODULE 환경 변수를 ARG로 설정합니다.
+
 
 WORKDIR /workspace/app
 
@@ -7,8 +9,7 @@ WORKDIR /workspace/app
 COPY . .
 
 # gradlew에 실행 권한을 부여합니다.
-RUN chmod +x ./${MODULE}/gradlew
-
+RUN chmod +x ./gradlew
 
 # 각 서비스의 Gradle 빌드를 수행합니다.
 RUN ./${MODULE}/gradlew build -p ${MODULE}
