@@ -19,7 +19,7 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 @Aggregate
 @Data
 public class RegisteredMembershipAggregate {
-    //test1113
+    //test
     @AggregateIdentifier
     private String id;
 
