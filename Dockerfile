@@ -9,13 +9,6 @@ COPY . .
 # gradlew에 실행 권한을 부여합니다.
 RUN chmod +x ./${MODULE}/gradlew
 
-# build.gradle 파일의 존재 여부를 확인합니다.
-RUN if [ ! -f "${MODULE}/build.gradle" ]; then \
-      echo "Error: build.gradle not found in ${MODULE} directory!"; \
-      exit 1; \
-    else \
-      echo "Found build.gradle in ${MODULE} directory."; \
-    fi
 
 # 각 서비스의 Gradle 빌드를 수행합니다.
 RUN ./${MODULE}/gradlew build -p ${MODULE}
