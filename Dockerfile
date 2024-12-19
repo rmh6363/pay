@@ -16,9 +16,6 @@ RUN ./gradlew clean
 RUN ./gradlew build -p ${MODULE}
 
 
-RUN ls /workspace/app/membership-service
-RUN ls /workspace/app/membership-service/build
-RUN ls /workspace/app/membership-service/build/libs
 
 
 FROM openjdk:11-jre-slim
@@ -29,7 +26,7 @@ RUN groupadd -r appuser && useradd -r -g appuser appuser
 WORKDIR /app
 
 # 빌드된 JAR 파일을 복사합니다. 경로를 확인하세요.
-COPY --from=builder /workspace/app/build/libs/${MODULE}.jar ./${MODULE}.jar
+COPY --from=builder /workspace/app/${MODULE}/build/libs/${MODULE}.jar ./${MODULE}.jar
 
 EXPOSE 8080
 
