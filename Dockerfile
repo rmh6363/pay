@@ -11,8 +11,9 @@ COPY . .
 # gradlew에 실행 권한을 부여합니다.
 RUN chmod +x ./gradlew
 
+RUN ./gradlew clean
 # 각 서비스의 Gradle 빌드를 수행합니다.
-RUN ./gradlew build -p ${MODULE} --info || { echo "Build failed"; exit 1; }
+RUN ./gradlew build -p ${MODULE}
 
 FROM openjdk:11-jre-slim
 
