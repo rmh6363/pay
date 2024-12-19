@@ -15,11 +15,11 @@ RUN ./gradlew clean
 # 각 서비스의 Gradle 빌드를 수행합니다.
 RUN ./gradlew build -p ${MODULE}
 
-RUN ls
-RUN ls /workspace
-RUN ls /workspace/app
-RUN ls /workspace/app/build/libs
-RUN ls /workspace/app/build/libs/${MODULE}
+
+RUN ls /workspace/app/membership-service
+RUN ls /workspace/app/membership-service/build
+RUN ls /workspace/app/membership-service/build/libs
+
 
 FROM openjdk:11-jre-slim
 
