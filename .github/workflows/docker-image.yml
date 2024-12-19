@@ -86,5 +86,12 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           MODULE: ${{ env.MODULE }}  # 환경 변수 사용
         run: |
-          docker build -t $REGISTRY/$REPOSITORY/${{ env.MODULE }}:${IMAGE_TAG} -f pay/${{ env.MODULE }}/Dockerfile .
-          docker push $REGISTRY/$REPOSITORY/${{ env.MODULE }}:${IMAGE_TAG}
+          # 변경된 서비스 목록을 가져옵니다.
+          changed_services=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '^(banking-service|franchise-service|logging-consumer|membership-service|money-query-service|money-service|payment-service|remittance-service|settlement-service|task-consumer)/' | awk -F '/' '{print $1}' | sort -u)
+
+          # 변경된 서비스가 있는 경우 이미지 빌드 및 푸시
+          for service in $changed_services; do
+            echo "Building and pushing image for: $service"
+            docker build -t $REGISTRY/$REPOSITORY/$service:${IMAGE_TAG} -f Dockerfile .
+            docker push $REGISTRY/$REPOSITORY/$service:${IMAGE_TAG}
+          done
