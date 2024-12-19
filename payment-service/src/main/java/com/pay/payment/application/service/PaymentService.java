@@ -6,6 +6,8 @@ import com.pay.payment.application.port.in.RequestPaymentUseCase;
 import com.pay.payment.application.port.out.*;
 import com.pay.payment.application.port.out.bank.GetRegisteredBankAccountPort;
 import com.pay.payment.application.port.out.bank.RegisteredBankAccountAggregateIdentifier;
+import com.pay.payment.application.port.out.franchise.FranchiseStatus;
+import com.pay.payment.application.port.out.franchise.GetFranchisePort;
 import com.pay.payment.application.port.out.membership.GetMembershipPort;
 import com.pay.payment.application.port.out.membership.MembershipStatus;
 import com.pay.payment.application.port.out.money.GetMoneyPort;
@@ -29,6 +31,8 @@ public class PaymentService implements RequestPaymentUseCase {
 
     private final GetMoneyPort getMoneyPort;
 
+    private final GetFranchisePort getFranchisePort;
+
 
     @Override
     public Payment requestPayment(RequestPaymentCommand command) {
@@ -48,7 +52,11 @@ public class PaymentService implements RequestPaymentUseCase {
         if (moneyInfo == null){
             return null;
         }
-
+        // 프렌차이즈 유효성 확인
+        FranchiseStatus franchiseStatus = getFranchisePort.getFranchise(command.getFranchiseId());
+        if (!franchiseStatus.isValid()){
+            return null;
+        }
         // createPaymentPort
         return createPaymentPort.createPayment(
                 command.getRequestMembershipId(),

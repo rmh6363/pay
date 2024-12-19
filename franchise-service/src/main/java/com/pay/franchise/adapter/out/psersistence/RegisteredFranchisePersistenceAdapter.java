@@ -3,13 +3,14 @@ package com.pay.franchise.adapter.out.psersistence;
 import com.pay.common.PersistenceAdapter;
 import com.pay.common.vault.VaultAdapter;
 import com.pay.franchise.application.port.out.FindFranchisePort;
+import com.pay.franchise.application.port.out.ModifyFranchisePort;
 import com.pay.franchise.application.port.out.RegisterFranchisePort;
 import com.pay.franchise.domain.Franchise;
 import lombok.RequiredArgsConstructor;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class RegisteredFranchisePersistenceAdapter implements RegisterFranchisePort, FindFranchisePort {
+public class RegisteredFranchisePersistenceAdapter implements RegisterFranchisePort, FindFranchisePort, ModifyFranchisePort {
     private final SpringDataFranchiseRepository springDataFranchiseRepository;
     private final VaultAdapter vaultAdapter;
 
@@ -48,5 +49,18 @@ public class RegisteredFranchisePersistenceAdapter implements RegisterFranchiseP
         clone.setContact(decryptedContact);
         clone.setBankAccountNumber(decryptedBankAccountNumber);
         return clone;
+    }
+
+
+
+    @Override
+    public FranchiseEntity ModifyFranchisee(Franchise.FranchiseeId franchiseeId, Franchise.Name name, Franchise.Contact contact, Franchise.BankName bankName, Franchise.BankAccountNumber bankAccountNumber, Franchise.IsValid isValid) {
+        FranchiseEntity entity = springDataFranchiseRepository.getById(Long.valueOf(franchiseeId.getFranchiseeId()));
+        entity.setName(vaultAdapter.encrypt(name.getName()));
+        entity.setBankAccountNumber(vaultAdapter.encrypt(bankAccountNumber.getBankAccountNumber()));
+        entity.setContact(vaultAdapter.encrypt(contact.getContact()));
+        entity.setValid(isValid.isValid());
+        entity.setBankName(bankName.getBankName());
+        return springDataFranchiseRepository.save(entity);
     }
 }
