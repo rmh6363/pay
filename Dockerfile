@@ -4,7 +4,7 @@ WORKDIR /workspace/app
 
 COPY . /workspace/app
 
-RUN echo ${MODULE}
+RUN chmod +x ./${MODULE}/gradlew
 
 RUN ./gradle build -p ${MODULE}
 
