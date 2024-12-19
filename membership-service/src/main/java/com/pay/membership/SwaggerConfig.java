@@ -21,7 +21,7 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.pay.membership"))
                 .paths(PathSelectors.any())
-                .build();
+                 .build();
     }
 
     private ApiInfo apiInfo() {
