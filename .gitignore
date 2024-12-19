@@ -79,3 +79,9 @@ coverage/
 *.swp
 init-vault.sh
 application.yml
+.terraform.lock.hcl
+kubectl.exe
+main.tf
+terraform.tfstate
+terraform.tfstate.backup
+.terraform/

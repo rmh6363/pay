@@ -26,7 +26,7 @@ public class FindMembershipControllerTest {
 
     @Test
     public void testFindMembership() throws Exception {
-        RegisterMembershipRequest request = new RegisterMembershipRequest("name", "email", "address", "");
+        RegisterMembershipRequest request = new RegisterMembershipRequest("name", "email", "address");
         mockMvc.perform(MockMvcRequestBuilders.get("/membership/{membershipId}/",1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request))
