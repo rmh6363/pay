@@ -4,6 +4,8 @@ WORKDIR /workspace/app
 
 COPY . /workspace/app
 
+RUN echo ${MODULE}
+
 RUN ./gradle build -p ${MODULE}
 
 FROM openjdk:11-jre-slim
