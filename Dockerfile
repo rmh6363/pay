@@ -12,7 +12,7 @@ COPY . .
 RUN chmod +x ./gradlew
 
 # 각 서비스의 Gradle 빌드를 수행합니다.
-RUN ./${MODULE}/gradlew build -p ${MODULE}
+RUN ./gradlew build -p ${MODULE}
 
 FROM openjdk:11-jre-slim
 
