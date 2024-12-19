@@ -23,7 +23,7 @@ RUN groupadd -r appuser && useradd -r -g appuser appuser
 WORKDIR /app
 
 # 빌드된 JAR 파일을 복사합니다. 경로를 확인하세요.
-COPY --from=builder /workspace/app/build/libs/${MODULE}.jar ./${MODULE}.jar
+COPY --from=builder /workspace/app/build/libs/membership-service.jar ./membership-service.jar
 
 EXPOSE 8080
 
