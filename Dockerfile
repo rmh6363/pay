@@ -1,13 +1,13 @@
 FROM gradle:jdk11-alpine as builder
 
 # MODULE 환경 변수를 ARG로 설정합니다.
-ARG MODULE
+ARG MODULE=${MODULE} 
 
 WORKDIR /workspace/app
 
 # 현재 디렉토리의 모든 파일을 복사합니다.
 COPY . /workspace/app
-RUN echo RUN echo "MODULE= ${MODULE}"
+RUN echo "MODULE= ${MODULE}"
 
 # gradlew에 실행 권한을 부여합니다.
 RUN chmod +x ./gradlew
@@ -15,17 +15,17 @@ RUN chmod +x ./gradlew
 RUN ./gradlew clean
 # 각 서비스의 Gradle 빌드를 수행합니다.
 RUN ./gradlew build -p ${MODULE}
-RUN echo RUN echo "MODULE= ${MODULE}"
+RUN echo "MODULE= ${MODULE}"
 
 
 
 FROM openjdk:11-jre-slim
-RUN echo RUN echo "MODULE= ${MODULE}"
+RUN echo "MODULE= ${MODULE}"
 # 애플리케이션 사용자 생성
 RUN groupadd -r appuser && useradd -r -g appuser appuser
-RUN echo RUN echo "MODULE= ${MODULE}"
+RUN echo "MODULE= ${MODULE}"
 WORKDIR /app
-RUN echo RUN echo "MODULE= ${MODULE}"
+RUN echo "MODULE= ${MODULE}"
 # 빌드된 JAR 파일을 복사합니다. 경로를 확인하세요.
 COPY --from=builder /workspace/app/${MODULE}/build/libs/${MODULE}.jar ./${MODULE}.jar
 
