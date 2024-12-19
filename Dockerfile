@@ -12,7 +12,7 @@ COPY . .
 RUN chmod +x ./gradlew
 
 # 각 서비스의 Gradle 빌드를 수행합니다.
-RUN ./gradlew build -p ${MODULE}
+RUN ./gradlew build -p ${MODULE} --info || { echo "Build failed"; exit 1; }
 
 FROM openjdk:11-jre-slim
 
