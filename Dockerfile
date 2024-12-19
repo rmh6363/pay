@@ -1,5 +1,21 @@
-FROM openjdk:11-slim-stretch
+FROM gradle:jdk11-alpine as builder
+
+WORDIR /workspace/app
+
+COPY . /workspace/app
+
+RUN .gradle build -p ${MODULE}
+
+FROM openjdk:11-jre-slim
+
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+
+WORKDIR /app
+
+copy --from=builder /workspace/app/${MODULE}.jar ./${MODULE}.jar
+
 EXPOSE 8080
-ARG JAR_FILE
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+
+USER appuser
+
+ENTRYPOINT ["java", "-jar", ""${MODULE}.jar"]
