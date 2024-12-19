@@ -100,6 +100,6 @@ jobs:
           # 변경된 서비스가 있는 경우 이미지 빌드 및 푸시
           for service in $changed_services; do
             echo "Building and pushing image for: $service"
-            docker build -t $REGISTRY/$REPOSITORY/$service:${IMAGE_TAG} -f $service/Dockerfile .
+            docker build -t $REGISTRY/$REPOSITORY/$service:${IMAGE_TAG} -f Dockerfile .
             docker push $REGISTRY/$REPOSITORY/$service:${IMAGE_TAG}
           done
