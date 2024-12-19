@@ -1,7 +1,7 @@
 FROM gradle:jdk11-alpine as builder
 
 # MODULE 환경 변수를 ARG로 설정합니다.
-ARG MODULE=${MODULE} 
+ARG MODULE
 
 WORKDIR /workspace/app
 
@@ -20,6 +20,7 @@ RUN echo "2MODULE= ${MODULE}"
 
 
 FROM openjdk:11-jre-slim
+ARG MODULE
 RUN echo "3MODULE= ${MODULE}"
 # 애플리케이션 사용자 생성
 RUN groupadd -r appuser && useradd -r -g appuser appuser
