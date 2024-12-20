@@ -65,7 +65,7 @@ jobs:
         run: |
           for service in ${{ env.changed_services }}; do
             echo "Building and pushing image for: $service"
-            docker build --build-arg MODULE=${{ env.MODULE }} \
+            docker build --build-arg MODULE=${{ env.service }} \
             -t $REGISTRY/$REPOSITORY/$service:${IMAGE_TAG} -f Dockerfile .
             docker push $REGISTRY/$REPOSITORY/$service:${IMAGE_TAG}
           done
