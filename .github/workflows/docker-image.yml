@@ -103,5 +103,5 @@ jobs:
             
             docker build --build-arg MODULE=${{ env.MODULE }} \
             -t $REGISTRY/$REPOSITORY/$service:${IMAGE_TAG} -f Dockerfile .
-            docker push $REGISTRY/$REPOSITORY/${IMAGE_TAG}
+            docker push $REGISTRY/$REPOSITORY/$service:${IMAGE_TAG}
           done
