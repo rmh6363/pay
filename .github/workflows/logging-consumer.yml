@@ -10,10 +10,6 @@ on:
       - logging-consumer/**
 
 
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - logging-consumer/**
 
 jobs:
   build:

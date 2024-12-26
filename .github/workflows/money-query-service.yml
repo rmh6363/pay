@@ -10,11 +10,6 @@ on:
       - money-query-service/**
 
 
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - money-query-service/**
-
 jobs:
   build:
     runs-on: ubuntu-latest

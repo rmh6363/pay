@@ -10,10 +10,7 @@ on:
       - money-service/**
 
 
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - money-service/**
+
 
 jobs:
   build:

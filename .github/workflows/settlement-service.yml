@@ -10,10 +10,6 @@ on:
       - settlement-service/**
 
 
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - settlement-service/**
 
 jobs:
   build:

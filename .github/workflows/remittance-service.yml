@@ -10,10 +10,6 @@ on:
       - remittance-service/**
 
 
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - remittance-service/**
 
 jobs:
   build:

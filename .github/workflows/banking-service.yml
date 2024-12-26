@@ -11,10 +11,7 @@ on:
       - banking-service/**
 
 
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - banking-service/**
+
 
 jobs:
   build:

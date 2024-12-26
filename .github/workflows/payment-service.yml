@@ -10,10 +10,7 @@ on:
       - payment-service/**
 
 
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - payment-service/**
+
 
 jobs:
   build:

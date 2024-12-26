@@ -10,10 +10,6 @@ on:
       - franchise-service/**
 
 
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - franchise-service/**
 
 jobs:
   build:
