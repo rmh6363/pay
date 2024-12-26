@@ -1,5 +1,8 @@
 name: CI for Money Service
-
+env:
+  HELM_VALUE: money-service-chart/values-dev.yaml
+  HELM_BRANCH: main
+  BUILD_ID: money-service
 on:
   push:
     branches: [ "main" ]
@@ -38,7 +41,30 @@ jobs:
           REPOSITORY: pay-devops
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build --build-arg MODULE=money-service \
-          -t $REGISTRY/$REPOSITORY/money-service:${IMAGE_TAG} -f Dockerfile .
-          docker push $REGISTRY/$REPOSITORY/money-service:${IMAGE_TAG}
-          
+          docker build --build-arg MODULE=${{env.BUILD_ID}} \
+          -t $REGISTRY/$REPOSITORY/${{env.BUILD_ID}}:${IMAGE_TAG} -f Dockerfile .
+          docker push $REGISTRY/$REPOSITORY/${{env.BUILD_ID}}:${IMAGE_TAG}
+
+      - name: Checkout Helm Repository
+        uses: actions/checkout@v2
+        with:
+          repository: rmh6363/pay-helm-charts
+          path: helm-chart
+          ref: main
+          ssh-key: ${{secrets.HELM_CHARTS_REPO_KEY}}
+
+      - name: Change Image tag of the Helm value
+        users: mikefarah/yq@v4.34.1
+        with:
+          cmd: yq -i '.image.tag = "${{ github.sha }}"' helm-chart/${{env.HELM_VALUE}}
+
+      - name: Commit and Push HELM changes
+      - run: |
+          cd helm-chart
+          git config --local user.email "githubaction@gmail.com"
+          git config --local user.name "GitHubAction"
+          git add .
+          git commit -m "Commit HELM changes: ${{env.ECR_REPOSITORY}}:${{github.sha}}"
+          current_branch=$(git branch --show-current)
+          git checkout -b ${{env.HELM_BRANCH}} && git merge ${current_branch}
+          git push --force origin ${{env.HELM_BRANCH}}
