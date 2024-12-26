@@ -1,0 +1,44 @@
+name: CI for Settlement Service
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - settlement-service/**
+
+
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - settlement-service/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # 모든 커밋을 가져옵니다.
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push changed services
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: pay-devops
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build --build-arg MODULE=settlement-service \
+          -t $REGISTRY/$REPOSITORY/settlement-service:${IMAGE_TAG} -f Dockerfile .
+          docker push $REGISTRY/$REPOSITORY/settlement-service:${IMAGE_TAG}
+          
