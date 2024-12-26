@@ -44,7 +44,7 @@ jobs:
       - name: Checkout Helm Repository
         uses: actions/checkout@v2
         with:
-          repository: rmh6363/rmh6363/pay-helm-charts
+          repository: rmh6363/pay-helm-charts
           path: helm-chart
           ref: main
           ssh-key: ${{secrets.HELM_CHARTS_REPO_KEY}}
