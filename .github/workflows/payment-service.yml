@@ -54,7 +54,7 @@ jobs:
           ssh-key: ${{secrets.HELM_CHARTS_REPO_KEY}}
 
       - name: Change Image tag of the Helm value
-        users: mikefarah/yq@v4.34.1
+        uses: mikefarah/yq@v4.34.1
         with:
           cmd: yq -i '.image.tag = "${{ github.sha }}"' helm-chart/${{env.HELM_VALUE}}
 
